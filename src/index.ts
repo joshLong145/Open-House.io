@@ -1,3 +1,4 @@
+import {Result} from './models/Result';
 import { parseData, generateModel, resolveModelTransform, resolveDomStructureForModel } from './preprocessor';
 
 async function main() {
@@ -8,11 +9,17 @@ async function main() {
 
     models.length && resolveModelTransform(models);
     for (const model of models) {
-        await resolveDomStructureForModel(model).catch((error: any) => {
-            console.error(error);
-        });
-        model.Transform.transform(); 
-    }    
+        try {
+            await resolveDomStructureForModel(model).catch((err: any) => {
+
+            });
+            model.Transform.transform().then((res: Result) => {
+                console.log(res.Values);
+            }).catch((error: any) => {}); 
+        } catch(e) {
+            console.log('oopse');
+        }
+    }
 }
 main();
 

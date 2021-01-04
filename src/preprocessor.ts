@@ -1,10 +1,9 @@
 import { BaseTransformModel } from './models/base';
 import { 
-    ApartmentsDotComTransform,
-} from './transformers/apartmentsDotComTransform';
+   Zillow,
+} from './transformers/zillow';
 
-import { JSDOM } from 'jsdom';
-import { StringDecoder } from 'string_decoder';
+import { JSDOM, VirtualConsole } from 'jsdom';
 
 export function generateModel(data: any[]): BaseTransformModel[] { 
     const models: any[] = [];
@@ -34,7 +33,7 @@ export function resolveModelTransform(models: BaseTransformModel[]) {
         switch(model.Data.transformer) {
             case "zillow":
                 console.log("Resolving new transformer for model");
-                model.Transform = new ApartmentsDotComTransform();
+                model.Transform = new Zillow();
                 break;
         } 
     }
@@ -54,26 +53,21 @@ export async function resolveDomStructureForModel(model: BaseTransformModel): Pr
             page.then((resp: any) => {
                 return resp.text();
             }).then((text: string) => {
-                // const vc = new (jsdom as any).VirtualConsole();
-                // wvc.sendTo(console); 
-                // console.log(text);
                 try {
-                    const dom = new JSDOM(text,{
-                        //contentType: 'text/html',
-                        //runScripts: "dangerously",
+                    const vc = new VirtualConsole();
+                    const dom = new JSDOM(text, {
                         resources: "usable",
                         pretendToBeVisual: true,
-                        //referrer: 'https://www.google.com', 
-                        //vc,
-                    });
+                        virtualConsole: vc
+                   });
                     console.info("Resolved dom model for: ", model.Data.url);
                     model.Transform.Dom = dom ? dom.window.document : undefined;
                     resolve(model);
                 } catch(e) 
                 {
-
+                    reject(e);
                 }
-            });
+            }).catch((err: any) => {});
         } catch (e) {
             console.error("Error while resolving DOM for model", e.message);
             reject(e);

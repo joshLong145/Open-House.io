@@ -1,4 +1,3 @@
-
 export class BaseTransformModel {
     private _data: any;
     get Data() { return this._data; }
