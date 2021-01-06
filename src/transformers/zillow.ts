@@ -18,7 +18,8 @@ export class Zillow extends Base {
                                 const name = aTagWrapper.children[0].textContent;
                                 if (div.length) { 
                                     const priceWrapper = div[0].getElementsByClassName('list-card-price');
-                                    const price = priceWrapper[0].textContent;
+                                    var price = priceWrapper[0].textContent;
+                                    price = this.prasePrice(price);
                                     const resValue = new ResultValue();
                                     resValue.Url = aTagWrapper.href;
                                     resValue.Name = name;
@@ -38,6 +39,11 @@ export class Zillow extends Base {
                 resolve(result);
             }
         });
+    }
+
+    prasePrice(price: string): string { 
+        const result: any = price.match(/(\$[0-9,]+(\.[0-9]{2})?)/);
+        return result[0];
     }
 
     public constructor() {
