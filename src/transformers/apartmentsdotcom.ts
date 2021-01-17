@@ -12,15 +12,24 @@ export class ADC extends Base {
                     for (const listing of list.children) {
                         const section: HTMLElement = listing.children[0];
                         const addressWrapper: any = section.children[0].children[0].children[0];
+                        var address: any;
                         if(addressWrapper) {
-                           const address = addressWrapper.children[1];
-                            console.log(address.textContent, addressWrapper.href);
+                           address = addressWrapper.children[1];
+                           // console.log(address.textContent, addressWrapper.href);
                         }
+                        const priceSection: any = section.children[1];
+                        const priceWrapper: any = priceSection.getElementsByClassName('price-range');
+                        //console.log(priceWrapper[0].textContent);
+                        const resValue = new ResultValue();
+                        resValue.Url = addressWrapper.href;
+                        resValue.Name = address.textContent;
+                        resValue.Price = priceWrapper[0].textContent;
+
+                        result.Values.push(resValue);
+                        resolve(result);
                     }
                 }
-           } catch(e) {
-                console.log(e);
-            }
+           } catch(e) {  }
         });
     }
 }

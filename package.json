@@ -12,7 +12,8 @@
   "license": "ISC",
   "dependencies": {
     "jsdom": "^16.4.0",
-    "node-fetch": "^2.6.1"
+    "node-fetch": "^2.6.1",
+    "mpi-node": "0.5.7"
   },
   "devDependencies": {
     "@types/jsdom": "^16.2.5",
