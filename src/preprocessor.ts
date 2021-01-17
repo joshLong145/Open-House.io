@@ -2,7 +2,7 @@ import { BaseTransformModel } from './models/base';
 import { 
    Zillow,
 } from './transformers/zillow';
-
+import {ADC} from './transformers/apartmentsdotcom';
 import { JSDOM, VirtualConsole } from 'jsdom';
 
 export function generateModel(data: any[]): BaseTransformModel[] { 
@@ -35,9 +35,13 @@ export function resolveModelTransform(models: BaseTransformModel[]) {
                 console.log("Resolving new transformer for model");
                 model.Transform = new Zillow();
                 break;
+            
+            case "ADC":
+                console.log('Resolving new transformer for model');
+                model.Transform = new ADC();
+                break;
         } 
     }
-
 }
 
 export async function resolveDomStructureForModel(model: BaseTransformModel): Promise<BaseTransformModel> {
