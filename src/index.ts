@@ -1,25 +1,13 @@
-import {Result} from './models/Result';
-import { parseData, generateModel, resolveModelTransform, resolveDomStructureForModel } from './preprocessor';
+import express from 'express';
+import bodyParser from 'body-parser';
 
-async function main() {
-    console.info(process.argv);
-    // Giving the location of the config to the pre processor
-    const config = parseData(process.argv[2]);
-    const models = config ? generateModel(config.sources) : [];
+const app = express();
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
-    models.length && resolveModelTransform(models);
-    for (const model of models) {
-        try {
-            await resolveDomStructureForModel(model).catch((err: any) => {
+import parseRoutes from './routes/parsing';
 
-            });
-            model.Transform.transform().then((res: Result) => {
-                console.log(res.Values);
-            }).catch((error: any) => {}); 
-        } catch(e) {
-            console.log('oopse');
-        }
-    }
-}
-main();
+app.use('/api', parseRoutes);
 
+app.listen(5000);
+console.log('api listening on 3000');
