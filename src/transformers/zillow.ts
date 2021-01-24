@@ -5,12 +5,14 @@ export class Zillow extends Base {
         return new Promise<Result>((resolve, reject) => {
             const result: Result = new Result();
             try {
-               for(const el of this.Dom.body.children) {
-                    if (el.id == 'wrapper') {
-                        const list = el.getElementsByClassName('photo-cards_wow photo-cards_short')
+                var length: number = this.Dom?.children?.length || 0;
+               for(var i = 0; i < length; i++) {
+                    if (this.Dom?.children[i].id == 'wrapper') {
+                        const list = this.Dom.children[i].getElementsByClassName('photo-cards_wow photo-cards_short')
                         // we assume here there is only element with this class combinatation in the parent.
-                        for(const listEl of list[0].children) {
-                            const outerWrapper = listEl.getElementsByClassName('list-card')
+                        var listLength: number = list[0].children.length || 0;
+                        for(var j= 0; j < listLength; j++) {
+                            const outerWrapper = list[0].children[i].getElementsByClassName('list-card')
                             // console.log(outerWrapper)
                             if(outerWrapper.length) {
                                 const div = outerWrapper[0].getElementsByClassName('list-card-info');
@@ -18,12 +20,12 @@ export class Zillow extends Base {
                                 const name = aTagWrapper.children[0].textContent;
                                 if (div.length) { 
                                     const priceWrapper = div[0].getElementsByClassName('list-card-price');
-                                    var price = priceWrapper[0].textContent;
+                                    var price = priceWrapper[0].textContent || '';
                                     price = this.prasePrice(price);
                                     const resValue = new ResultValue();
-                                    resValue.Url = aTagWrapper.href;
-                                    resValue.Name = name;
-                                    resValue.Price = price;
+                                    resValue.Url = (aTagWrapper as any).href; // force type cast because i dont know why this is not a property on the type decleration.
+                                    resValue.Name = name || '';
+                                    resValue.Price = price || '';
                                     result.Values.push(resValue);
                                     //console.log(name, price, aTagWrapper.href);
                                 }

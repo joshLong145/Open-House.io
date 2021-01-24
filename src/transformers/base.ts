@@ -1,11 +1,12 @@
+import { JSDOM } from "jsdom";
 import {Result} from "../models/Result";
 
 export abstract class Base {
-    private _dom: any;
+    private _dom: Document | undefined;
     get Dom() { return this._dom; }
-    set Dom(value: any) { this._dom = value; }
+    set Dom(value: Document | undefined) { this._dom = value; }
 
-    abstract transform(data:any): Promise<Result>; 
+    abstract transform(): Promise<Result>; 
 
     public constructor() {}
 };

@@ -6,7 +6,7 @@ export class ADC extends Base {
         return new Promise<Result>((resolve, reject) => {
             const result: Result = new Result();
             try {
-                const listWrapper: any = this.Dom.getElementById('placardContainer');
+                const listWrapper: any = this.Dom?.getElementById('placardContainer');
                 if (listWrapper) {
                     const list: any = listWrapper.children[0];
                     for (const listing of list.children) {

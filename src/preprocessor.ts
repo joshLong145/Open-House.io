@@ -48,7 +48,7 @@ export async function resolveDomStructureForModel(model: BaseTransformModel): Pr
     return new Promise<BaseTransformModel>((resolve, reject) => {
         try {
             const fetch = require('node-fetch');
-            const page = fetch(model.Data.url, {
+            const page: any = fetch(model.Data.url, {
                 headers: {
                     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:77.0) Gecko/20100101 Firefox/77.0',
                     'Cookie': model.Cookie
@@ -58,8 +58,8 @@ export async function resolveDomStructureForModel(model: BaseTransformModel): Pr
                 return resp.text();
             }).then((text: string) => {
                 try {
-                    const vc = new VirtualConsole();
-                    const dom = new JSDOM(text, {
+                    const vc: VirtualConsole = new VirtualConsole();
+                    const dom: JSDOM = new JSDOM(text, {
                         resources: "usable",
                         pretendToBeVisual: true,
                         virtualConsole: vc
