@@ -12,5 +12,5 @@ parseingRoutes.configureRoutes();
 
 app.use('/api', parseingRoutes.Router);
 
-app.listen(5000);
-console.log('api listening on 5000');
+app.listen(process.env.API_PORT);
+console.log('api listening on', process.env.API_PORT);

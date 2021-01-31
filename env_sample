@@ -1,0 +1,3 @@
+DB_HOST=localhost
+DB_PORT=2377
+API_PORT=5000
