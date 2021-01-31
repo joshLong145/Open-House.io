@@ -8,13 +8,13 @@ export class ADC extends Base {
             try {
                 const listWrapper: any = this.Dom?.getElementById('placardContainer');
                 if (listWrapper) {
-                    const list: any = listWrapper.children[0];
+                    const list: any = listWrapper?.children[0];
                     for (const listing of list.children) {
-                        const section: HTMLElement = listing.children[0];
-                        const addressWrapper: any = section.children[0].children[0].children[0];
+                        const section: HTMLElement = listing?.children[0];
+                        const addressWrapper: any = section?.children[0]?.children[0]?.children[0];
                         var address: any;
                         if(addressWrapper) {
-                           address = addressWrapper.children[1];
+                           address = addressWrapper?.children[1];
                            // console.log(address.textContent, addressWrapper.href);
                         }
                         const priceSection: any = section.children[1];
@@ -29,7 +29,9 @@ export class ADC extends Base {
                         resolve(result);
                     }
                 }
-           } catch(e) {  }
+           } catch(e) {  
+               console.error(e);
+           }
         });
     }
 }

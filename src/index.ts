@@ -5,9 +5,12 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-import parseRoutes from './routes/parsing';
+import { ParsingRoutes }from './routes/parsing';
 
-app.use('/api', parseRoutes);
+const parseingRoutes: ParsingRoutes =  new ParsingRoutes(express.Router());
+parseingRoutes.configureRoutes();
+
+app.use('/api', parseingRoutes.Router);
 
 app.listen(5000);
-console.log('api listening on 3000');
+console.log('api listening on 5000');
