@@ -3,7 +3,7 @@ export class ResultValue {
     public get Name() { return this._name; }
     public set Name(value: string) {this._name = value;}
 
-    private _price: string = 0;
+    private _price: string = '';
     public get Price(): string { return this._price; }
     public set Price(value: string) { this._price = value; }
 
