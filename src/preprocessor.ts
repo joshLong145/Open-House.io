@@ -71,7 +71,9 @@ export async function resolveDomStructureForModel(model: BaseTransformModel): Pr
                 {
                     reject(e);
                 }
-            }).catch((err: any) => {});
+            }).catch((err: any) => {
+                console.error(err);
+            });
         } catch (e) {
             console.error("Error while resolving DOM for model", e.message);
             reject(e);
