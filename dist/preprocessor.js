@@ -110,7 +110,9 @@ function resolveDomStructureForModel(model) {
                             catch (e) {
                                 reject(e);
                             }
-                        }).catch(function (err) { });
+                        }).catch(function (err) {
+                            console.error(err);
+                        });
                     }
                     catch (e) {
                         console.error("Error while resolving DOM for model", e.message);

@@ -24,41 +24,40 @@ var Zillow = /** @class */ (function (_super) {
     Zillow.prototype.transform = function () {
         var _this = this;
         return new Promise(function (resolve, reject) {
+            var _a;
             var result = new Result_1.Result();
             try {
-                for (var _i = 0, _a = _this.Dom.body.children; _i < _a.length; _i++) {
-                    var el = _a[_i];
-                    if (el.id == 'wrapper') {
-                        var list = el.getElementsByClassName('photo-cards_wow photo-cards_short');
-                        // we assume here there is only element with this class combinatation in the parent.
-                        for (var _b = 0, _c = list[0].children; _b < _c.length; _b++) {
-                            var listEl = _c[_b];
-                            var outerWrapper = listEl.getElementsByClassName('list-card');
-                            // console.log(outerWrapper)
-                            if (outerWrapper.length) {
-                                var div = outerWrapper[0].getElementsByClassName('list-card-info');
-                                var aTagWrapper = div[0].children[0];
-                                var name_1 = aTagWrapper.children[0].textContent;
-                                if (div.length) {
-                                    var priceWrapper = div[0].getElementsByClassName('list-card-price');
-                                    var price = priceWrapper[0].textContent;
-                                    price = _this.prasePrice(price);
-                                    var resValue = new Result_1.ResultValue();
-                                    resValue.Url = aTagWrapper.href;
-                                    resValue.Name = name_1;
-                                    resValue.Price = price;
-                                    result.Values.push(resValue);
-                                    //console.log(name, price, aTagWrapper.href);
-                                }
+                var listWrapper = (_a = _this.Dom) === null || _a === void 0 ? void 0 : _a.getElementById('wrapper');
+                if (listWrapper) {
+                    var list = listWrapper.getElementsByClassName('photo-cards_wow photo-cards_short');
+                    // we assume here there is only element with this class combinatation in the parent.
+                    var listLength = list[0].children.length || 0;
+                    for (var i = 0; i < listLength; i++) {
+                        var outerWrapper = list[0].children[i].getElementsByClassName('list-card');
+                        // console.log(outerWrapper)
+                        if (outerWrapper.length) {
+                            var div = outerWrapper[0].getElementsByClassName('list-card-info');
+                            var aTagWrapper = div[0].children[0];
+                            var name_1 = aTagWrapper.children[0].textContent;
+                            if (div.length) {
+                                var priceWrapper = div[0].getElementsByClassName('list-card-price');
+                                var price = priceWrapper[0].textContent || '';
+                                price = _this.prasePrice(price);
+                                var resValue = new Result_1.ResultValue();
+                                resValue.Url = aTagWrapper.href; // force type cast because i dont know why this is not a property on the type decleration.
+                                resValue.Name = name_1 || '';
+                                resValue.Price = price || '';
+                                result.Values.push(resValue);
                             }
                         }
-                        result.Status = 200;
-                        resolve(result);
                     }
                 }
+                result.Status = 200;
+                resolve(result);
             }
             catch (e) {
                 result.Status = 500;
+                console.error(e);
                 resolve(result);
             }
         });

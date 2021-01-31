@@ -4,7 +4,7 @@ exports.Result = exports.ResultValue = void 0;
 var ResultValue = /** @class */ (function () {
     function ResultValue() {
         this._name = '';
-        this._price = 0;
+        this._price = '';
         this._url = '';
     }
     Object.defineProperty(ResultValue.prototype, "Name", {

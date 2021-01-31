@@ -24,18 +24,19 @@ var ADC = /** @class */ (function (_super) {
     ADC.prototype.transform = function () {
         var _this = this;
         return new Promise(function (resolve, reject) {
+            var _a, _b, _c;
             var result = new Result_1.Result();
             try {
-                var listWrapper = _this.Dom.getElementById('placardContainer');
+                var listWrapper = (_a = _this.Dom) === null || _a === void 0 ? void 0 : _a.getElementById('placardContainer');
                 if (listWrapper) {
-                    var list = listWrapper.children[0];
-                    for (var _i = 0, _a = list.children; _i < _a.length; _i++) {
-                        var listing = _a[_i];
-                        var section = listing.children[0];
-                        var addressWrapper = section.children[0].children[0].children[0];
+                    var list = listWrapper === null || listWrapper === void 0 ? void 0 : listWrapper.children[0];
+                    for (var _i = 0, _d = list.children; _i < _d.length; _i++) {
+                        var listing = _d[_i];
+                        var section = listing === null || listing === void 0 ? void 0 : listing.children[0];
+                        var addressWrapper = (_c = (_b = section === null || section === void 0 ? void 0 : section.children[0]) === null || _b === void 0 ? void 0 : _b.children[0]) === null || _c === void 0 ? void 0 : _c.children[0];
                         var address;
                         if (addressWrapper) {
-                            address = addressWrapper.children[1];
+                            address = addressWrapper === null || addressWrapper === void 0 ? void 0 : addressWrapper.children[1];
                             // console.log(address.textContent, addressWrapper.href);
                         }
                         var priceSection = section.children[1];
@@ -50,7 +51,9 @@ var ADC = /** @class */ (function (_super) {
                     }
                 }
             }
-            catch (e) { }
+            catch (e) {
+                console.error(e);
+            }
         });
     };
     return ADC;
