@@ -1,0 +1,24 @@
+{
+    "sources": [
+        {
+            "url": "https://www.zillow.com/homes/for_rent/Hackensack,-NJ_rb/",
+            "Cookie":"zguid=23|%24875004a7-2da0-4013-83d9-9575424e2a28; zjs_anonymous_id=%22875004a7-2da0-4013-83d9-9575424e2a28%22; zjs_user_id=null; AWSALB=R55sk9o73G313OMUppOCgauk5kf25CjlJ6JWRSM7ES2n6VC6De/WZbJXsSZFFX3KZE7jzNSJtwNvjDDCbC5paHVhWd1q6JsRYSFHCDLCRznv9kEYQ0HiMr5IwP8T; AWSALBCORS=R55sk9o73G313OMUppOCgauk5kf25CjlJ6JWRSM7ES2n6VC6De/WZbJXsSZFFX3KZE7jzNSJtwNvjDDCbC5paHVhWd1q6JsRYSFHCDLCRznv9kEYQ0HiMr5IwP8T; _ga=GA1.2.117306293.1609369617; _gid=GA1.2.1993337270.1609369617; _pxvid=b6c05c3b-4af3-11eb-977c-0242ac120007; _gcl_au=1.1.394352622.1609369617; KruxPixel=true; _pin_unauth=dWlkPU1UQmtZMlpoWkRjdE9XUXdaaTAwWTJWa0xXSTJNek10TmpJMU5UUm1aVFptTlRReA; _fbp=fb.1.1609369617731.17045799; KruxAddition=true; zgsession=1|6346e6a1-2f2b-49b7-8905-263ae138cebd; JSESSIONID=2C35211397BCC18F3E144E9170120B0D; DoubleClickSession=true; _px3=121b0eaecb218d09bd6e3f0dee44931b98078faf79b03dab17723f1e1891a5e3:EJ5kugMI7zEmBIOx5NIRorYRW+d0Lkh4OsRc7bOsawWe3stSWfVbMC6KE7o5Go6kx3EVIKmiHErGuuKnloMDzg==:1000:qFMdCk6RvM/+U36+xPylpfwT5/pPDmwKEOTs6MZC5ad+nutPlGNEWVGNqSoGuwPPeEjE9JQ0xKUsGtoSntdq6gHWzYiOFpqZuAU1O1gW9UxSWFOucLHEv4JVUB2PCO5qyNgtJo8ZCiFe8auwvHDU+341Zm9vP4QTdskz5DIkPSI=; search=6|1612039459929%7Crect%3D40.92380368648092%252C-74.00980130395509%252C40.84814291707461%252C-74.08361569604493%26rid%3D38835%26disp%3Dmap%26mdm%3Dauto%26p%3D1%26sort%3Ddays%26z%3D1%26fs%3D0%26fr%3D1%26mmm%3D0%26rs%3D0%26ah%3D0%26singlestory%3D0%26housing-connector%3D0%26abo%3D0%26garage%3D0%26pool%3D0%26ac%3D0%26waterfront%3D0%26finished%3D0%26unfinished%3D0%26cityview%3D0%26mountainview%3D0%26parkview%3D0%26waterview%3D0%26hoadata%3D1%26zillow-owned%3D0%263dhome%3D0%09%0938835%09%09%09%09%09%09; _uetsid=b70c34a04af311eba063114de3461396; _uetvid=b70c42904af311eba5b78d7e9a7067f3; ki_t=1609447462692%3B1609447462692%3B1609447462692%3B1%3B1; ki_r=; __gads=ID=e9eb8629fee89cd7-22d0016286b80001:T=1609447463:S=ALNI_MZtzcxMZgpiAy3eVnBF-MEWUquhHQ",
+            "limit": 20,
+            "price_upper": 2000,
+            "transformer": "zillow"
+        },
+        {
+            "url": "https://www.zillow.com/homes/Mahwah-Township,-NJ_rb/",
+            "Cookie":"zguid=23|%24875004a7-2da0-4013-83d9-9575424e2a28; zjs_anonymous_id=%22875004a7-2da0-4013-83d9-9575424e2a28%22; zjs_user_id=null; AWSALB=R55sk9o73G313OMUppOCgauk5kf25CjlJ6JWRSM7ES2n6VC6De/WZbJXsSZFFX3KZE7jzNSJtwNvjDDCbC5paHVhWd1q6JsRYSFHCDLCRznv9kEYQ0HiMr5IwP8T; AWSALBCORS=R55sk9o73G313OMUppOCgauk5kf25CjlJ6JWRSM7ES2n6VC6De/WZbJXsSZFFX3KZE7jzNSJtwNvjDDCbC5paHVhWd1q6JsRYSFHCDLCRznv9kEYQ0HiMr5IwP8T; _ga=GA1.2.117306293.1609369617; _gid=GA1.2.1993337270.1609369617; _pxvid=b6c05c3b-4af3-11eb-977c-0242ac120007; _gcl_au=1.1.394352622.1609369617; KruxPixel=true; _pin_unauth=dWlkPU1UQmtZMlpoWkRjdE9XUXdaaTAwWTJWa0xXSTJNek10TmpJMU5UUm1aVFptTlRReA; _fbp=fb.1.1609369617731.17045799; KruxAddition=true; zgsession=1|6346e6a1-2f2b-49b7-8905-263ae138cebd; JSESSIONID=2C35211397BCC18F3E144E9170120B0D; DoubleClickSession=true; _px3=121b0eaecb218d09bd6e3f0dee44931b98078faf79b03dab17723f1e1891a5e3:EJ5kugMI7zEmBIOx5NIRorYRW+d0Lkh4OsRc7bOsawWe3stSWfVbMC6KE7o5Go6kx3EVIKmiHErGuuKnloMDzg==:1000:qFMdCk6RvM/+U36+xPylpfwT5/pPDmwKEOTs6MZC5ad+nutPlGNEWVGNqSoGuwPPeEjE9JQ0xKUsGtoSntdq6gHWzYiOFpqZuAU1O1gW9UxSWFOucLHEv4JVUB2PCO5qyNgtJo8ZCiFe8auwvHDU+341Zm9vP4QTdskz5DIkPSI=; search=6|1612039459929%7Crect%3D40.92380368648092%252C-74.00980130395509%252C40.84814291707461%252C-74.08361569604493%26rid%3D38835%26disp%3Dmap%26mdm%3Dauto%26p%3D1%26sort%3Ddays%26z%3D1%26fs%3D0%26fr%3D1%26mmm%3D0%26rs%3D0%26ah%3D0%26singlestory%3D0%26housing-connector%3D0%26abo%3D0%26garage%3D0%26pool%3D0%26ac%3D0%26waterfront%3D0%26finished%3D0%26unfinished%3D0%26cityview%3D0%26mountainview%3D0%26parkview%3D0%26waterview%3D0%26hoadata%3D1%26zillow-owned%3D0%263dhome%3D0%09%0938835%09%09%09%09%09%09; _uetsid=b70c34a04af311eba063114de3461396; _uetvid=b70c42904af311eba5b78d7e9a7067f3; ki_t=1609447462692%3B1609447462692%3B1609447462692%3B1%3B1; ki_r=; __gads=ID=e9eb8629fee89cd7-22d0016286b80001:T=1609447463:S=ALNI_MZtzcxMZgpiAy3eVnBF-MEWUquhHQ",
+            "limit": 20,
+            "price_upper": 2000,
+            "transformer": "zillow"
+        },
+        {
+            "url": "https://www.apartments.com/hackensack-nj/1-bedrooms-under-2100/?bb=vp_w10qzwHisv6gN",
+            "limit": 20,
+            "price_upper": 2000,
+            "transformer": "ADC"
+        }
+    ]
+}
