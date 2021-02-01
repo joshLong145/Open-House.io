@@ -31,6 +31,7 @@ export class ADC extends Base {
                 }
            } catch(e) {  
                console.error(e);
+               reject(e);
            }
         });
     }
