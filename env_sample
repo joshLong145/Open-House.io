@@ -1,3 +1,3 @@
-DB_HOST=localhost
-DB_PORT=2377
+DB_HOST=mongodb://localhost
+DB_PORT=27017
 API_PORT=5000
