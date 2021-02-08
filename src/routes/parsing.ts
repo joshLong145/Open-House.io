@@ -34,7 +34,7 @@ export class ParsingRoutes extends BaseRoute {
                 });
                 for (const data of res.Values) {
                     const collection: Collection | undefined = this._db?.collection(process.env.COLLECTION_NAME as string);
-                     collection?.find({'Name': data.Name}).toArray().then(docs => {
+                     collection?.find({'_name': data.Name}).toArray().then(docs => {
                         docs.length < 1 && collection.insertOne(data);
                      });
 

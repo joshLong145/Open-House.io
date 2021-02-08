@@ -21,7 +21,8 @@ export class PersistanceManager {
         }
     }
     private ConstructURI(): string {
-        return `mongodb://${process.env.DB_USER_NAME}:${process.env.DB_PASS}@${process.env.DB_HOST}:${process.env.DB_PORT}`;
+        const uri: string = `mongodb://${process.env.DB_USER_NAME}:${process.env.DB_PASS}@${process.env.DB_HOST}:${process.env.DB_PORT}`;
+        return uri;
     }
 
     get DB(): Db | undefined {
