@@ -1,3 +1,4 @@
+import {Collection, Db} from 'mongodb';
 import {Result} from '../models/Result';
 import { generateModel, 
          resolveModelTransform, 
@@ -8,13 +9,13 @@ import { BaseRoute } from './baseRoute';
 
 export class ParsingRoutes extends BaseRoute {
 
-    constructor(router: Router) {
-        super(router);
+    constructor(router: Router, db: Db | undefined) {
+        super(router, db);
     }
 
     configureRoutes(): void {
         this._router.use(this.timeLog);
-        this._router.post('/parse', this.parseFunctionEndpoint);
+        this._router.post('/parse', this.parseFunctionEndpoint.bind(this));
     }
 
     private async parseFunctionEndpoint(req: any, res: any) {
@@ -31,9 +32,16 @@ export class ParsingRoutes extends BaseRoute {
                 const res: Result =  await model.Transform.transform().catch((error: any) => {
                     console.error(error);
                 });
+                for (const data of res.Values) {
+                    const collection: Collection | undefined = this._db?.collection(process.env.COLLECTION_NAME as string);
+                     collection?.find({'Name': data.Name}).toArray().then(docs => {
+                        docs.length < 1 && collection.insertOne(data);
+                     });
+
+                }
                 results.push(res);
             } catch(e) {
-                console.log('oopse');
+                console.error(e);
             }
         }
         res.status(200).send(results);

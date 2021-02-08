@@ -1,20 +1,24 @@
 import {Db, MongoClient} from 'mongodb';
 
+
 export class PersistanceManager {
     private _db: Db | undefined;
     private _client: MongoClient | undefined;
 
     constructor() {
-        console.log('Presistance Managet initialized Configuring Database connection');
+        console.log('Presistance Manager');
 
     }
 
-    connect(): void {
-        MongoClient.connect(this.ConstructURI()).then((client: MongoClient) => {
+    async connect() {
+        console.log('initialized Configuring Database connection');
+        try {
+            const client: MongoClient = await MongoClient.connect(this.ConstructURI());
             this._db = client.db(process.env.DB_NAME);
-        }).catch(err => {
+            this._db.command({ping: 1}); // ping collection to make sure it is up
+        } catch(err) {
             console.error(err);
-        });
+        }
     }
     private ConstructURI(): string {
         return `mongodb://${process.env.DB_USER_NAME}:${process.env.DB_PASS}@${process.env.DB_HOST}:${process.env.DB_PORT}`;
