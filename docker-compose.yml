@@ -12,7 +12,7 @@ services:
   api:
     build:
       context: ./
-      dockerfile: Dockeerfile
+      dockerfile: Dockerfile
 
 volumes:
   mongodb_data_container:
