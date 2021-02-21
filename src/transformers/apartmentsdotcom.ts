@@ -1,7 +1,6 @@
 import { Base } from './base';
 import { Result, ResultValue } from './../models/Result';
 import { response } from 'express';
-
 export class ADC extends Base {
     transform() {
         return new Promise<Result>((resolve, reject) => {
@@ -12,23 +11,23 @@ export class ADC extends Base {
                     const list: any = listWrapper?.children[0];
                     for (const listing of list.children) {
                         const section: HTMLElement = listing?.children[0];
-                        const addressWrapper: any = section?.children[0]?.children[0]?.children[0];
-                        var address: any;
-                        if(addressWrapper) {
-                           address = addressWrapper?.children[1];
-                           // console.log(address.textContent, addressWrapper.href);
-                        }
-                        const priceSection: any = section.children[1];
-                        const priceWrapper: any = priceSection.getElementsByClassName('price-range');
+                        const addressWrapper: Element | null = section?.getElementsByClassName('property-address')?.item(0);
+                        const titleWrapper: Element | null = section?.getElementsByClassName('property-title')?.item(0);
+                        const urlWrapper: Element | null = section?.getElementsByClassName('property-link')?.item(0);
+
+                        const priceSection: Element | null = section?.getElementsByClassName('property-wrapper')?.item(0);
+                        const priceWrapper: Element | null | undefined = priceSection?.getElementsByClassName('price-range')?.item(0);
                         //console.log(priceWrapper[0].textContent);
                         const resValue = new ResultValue();
-                        resValue.Url = addressWrapper.href;
-                        resValue.Name = address.textContent;
-                        resValue.Price = parseInt(
-                            priceWrapper[0].textContent.split('-')[0].replace(',', '').replace('$', 0),
-                            10) 
-                        || 0;
+                        resValue.Url = (urlWrapper as HTMLLinkElement)?.href || '';
+                        resValue.Name = addressWrapper?.textContent || '';
 
+                        if (priceWrapper?.textContent) {
+                            const text: string = priceWrapper.textContent;
+                            const range:string[] = text.split('-')
+                            resValue.Price = range.length ? parseInt(range[0].replace(',', '').replace('$', ''), 10) 
+                            : parseInt(text.replace(',', '').replace('$', ''), 10);
+                        }
                         result.Values.push(resValue);
                         resolve(result);
                     }
