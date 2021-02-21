@@ -45,14 +45,20 @@ var ADC = /** @class */ (function (_super) {
                         var resValue = new Result_1.ResultValue();
                         resValue.Url = addressWrapper.href;
                         resValue.Name = address.textContent;
-                        resValue.Price = priceWrapper[0].textContent;
+                        resValue.Price = parseInt(priceWrapper[0].textContent.split('-')[0].replace(',', '').replace('$', 0), 10)
+                            || 0;
                         result.Values.push(resValue);
                         resolve(result);
                     }
                 }
+                else {
+                    console.info('no list content ... ');
+                    resolve(result);
+                }
             }
             catch (e) {
                 console.error(e);
+                resolve(result);
             }
         });
     };

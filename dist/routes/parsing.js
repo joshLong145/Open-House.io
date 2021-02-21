@@ -54,46 +54,58 @@ var preprocessor_1 = require("../preprocessor");
 var baseRoute_1 = require("./baseRoute");
 var ParsingRoutes = /** @class */ (function (_super) {
     __extends(ParsingRoutes, _super);
-    function ParsingRoutes(router) {
-        return _super.call(this, router) || this;
+    function ParsingRoutes(router, db) {
+        return _super.call(this, router, db) || this;
     }
     ParsingRoutes.prototype.configureRoutes = function () {
         this._router.use(this.timeLog);
-        this._router.post('/parse', this.parseFunctionEndpoint);
+        this._router.post('/parse', this.parseFunctionEndpoint.bind(this));
     };
     ParsingRoutes.prototype.parseFunctionEndpoint = function (req, res) {
+        var _a;
         return __awaiter(this, void 0, void 0, function () {
-            var config, models, results, _i, models_1, model, res_1, e_1;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            var config, models, results, _i, models_1, model, res_1, _loop_1, this_1, _b, _c, data, e_1;
+            return __generator(this, function (_d) {
+                switch (_d.label) {
                     case 0:
                         config = req.body;
                         models = config ? preprocessor_1.generateModel(config.sources) : [];
                         models.length && preprocessor_1.resolveModelTransform(models);
                         results = [];
                         _i = 0, models_1 = models;
-                        _a.label = 1;
+                        _d.label = 1;
                     case 1:
                         if (!(_i < models_1.length)) return [3 /*break*/, 7];
                         model = models_1[_i];
-                        _a.label = 2;
+                        _d.label = 2;
                     case 2:
-                        _a.trys.push([2, 5, , 6]);
+                        _d.trys.push([2, 5, , 6]);
                         return [4 /*yield*/, preprocessor_1.resolveDomStructureForModel(model).catch(function (err) {
                                 console.error(err);
                             })];
                     case 3:
-                        _a.sent();
+                        _d.sent();
                         return [4 /*yield*/, model.Transform.transform().catch(function (error) {
                                 console.error(error);
                             })];
                     case 4:
-                        res_1 = _a.sent();
+                        res_1 = _d.sent();
+                        _loop_1 = function (data) {
+                            var collection = (_a = this_1._db) === null || _a === void 0 ? void 0 : _a.collection(process.env.COLLECTION_NAME);
+                            collection === null || collection === void 0 ? void 0 : collection.find({ '_name': data.Name }).toArray().then(function (docs) {
+                                (docs === null || docs === void 0 ? void 0 : docs.length) < 1 && collection.insertOne(data);
+                            });
+                        };
+                        this_1 = this;
+                        for (_b = 0, _c = res_1 === null || res_1 === void 0 ? void 0 : res_1.Values; _b < _c.length; _b++) {
+                            data = _c[_b];
+                            _loop_1(data);
+                        }
                         results.push(res_1);
                         return [3 /*break*/, 6];
                     case 5:
-                        e_1 = _a.sent();
-                        console.log('oopse');
+                        e_1 = _d.sent();
+                        console.error(e_1);
                         return [3 /*break*/, 6];
                     case 6:
                         _i++;

@@ -46,7 +46,7 @@ var Zillow = /** @class */ (function (_super) {
                                 var resValue = new Result_1.ResultValue();
                                 resValue.Url = aTagWrapper.href; // force type cast because i dont know why this is not a property on the type decleration.
                                 resValue.Name = name_1 || '';
-                                resValue.Price = price || '';
+                                resValue.Price = parseInt(price.replace('$', '').replace(',', ''), 10) || 0;
                                 result.Values.push(resValue);
                             }
                         }

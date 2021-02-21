@@ -1,5 +1,6 @@
 import { Base } from './base';
 import { Result, ResultValue } from './../models/Result';
+import { response } from 'express';
 
 export class ADC extends Base {
     transform() {
@@ -23,15 +24,21 @@ export class ADC extends Base {
                         const resValue = new ResultValue();
                         resValue.Url = addressWrapper.href;
                         resValue.Name = address.textContent;
-                        resValue.Price = priceWrapper[0].textContent;
+                        resValue.Price = parseInt(
+                            priceWrapper[0].textContent.split('-')[0].replace(',', '').replace('$', 0),
+                            10) 
+                        || 0;
 
                         result.Values.push(resValue);
                         resolve(result);
                     }
+                } else {
+                    console.info('no list content ... ');
+                    resolve(result);
                 }
            } catch(e) {  
                console.error(e);
-               reject(e);
+               resolve(result);
            }
         });
     }
