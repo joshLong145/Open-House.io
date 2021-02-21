@@ -32,10 +32,10 @@ export class ParsingRoutes extends BaseRoute {
                 const res: Result =  await model.Transform.transform().catch((error: any) => {
                     console.error(error);
                 });
-                for (const data of res.Values) {
+                for (const data of res?.Values) {
                     const collection: Collection | undefined = this._db?.collection(process.env.COLLECTION_NAME as string);
                      collection?.find({'_name': data.Name}).toArray().then(docs => {
-                        docs.length < 1 && collection.insertOne(data);
+                        docs?.length < 1 && collection.insertOne(data);
                      });
 
                 }

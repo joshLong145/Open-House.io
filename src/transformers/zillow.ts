@@ -24,7 +24,7 @@ export class Zillow extends Base {
                                 const resValue = new ResultValue();
                                 resValue.Url = (aTagWrapper as any).href; // force type cast because i dont know why this is not a property on the type decleration.
                                 resValue.Name = name || '';
-                                resValue.Price = price || '';
+                                resValue.Price = parseInt(price.replace('$', '').replace(',', ''), 10) || 0;
                                 result.Values.push(resValue);
                             }
                         }

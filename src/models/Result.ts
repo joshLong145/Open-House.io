@@ -3,9 +3,9 @@ export class ResultValue {
     public get Name() { return this._name; }
     public set Name(value: string) {this._name = value;}
 
-    private _price: string = '';
-    public get Price(): string { return this._price; }
-    public set Price(value: string) { this._price = value; }
+    private _price: number = 0;
+    public get Price(): number { return this._price; }
+    public set Price(value: number) { this._price = value; }
 
     private _url: string = '';
     public get Url(): string { return this._url; }
