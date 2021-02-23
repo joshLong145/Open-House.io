@@ -13,11 +13,20 @@ export class StatsRoutes extends BaseRoute {
     }
 
     getAverageListingPrice(req: any, res: any) {
+        const town: string = req.query['town'];
         const collection: Collection | undefined = this._db?.collection(process.env.COLLECTION_NAME as string);
         const cursor: AggregationCursor| undefined = 
             collection?.aggregate([
                 {
-                $sort: {_name: 1}
+                    $expr: { 
+                        $gt: [
+                            { $indexOfCP: [ 
+                                "$_name", town 
+                        ] }, -1]
+                    }
+                }, 
+                {
+                    $project: {A:1}
                 },
                 {
                 $group: {
