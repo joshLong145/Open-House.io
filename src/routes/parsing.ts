@@ -1,16 +1,25 @@
 import {Collection, Db} from 'mongodb';
-import {Result} from '../models/Result';
-import { generateModel, 
-         resolveModelTransform, 
-         resolveDomStructureForModel 
-        } from '../preprocessor';
+import { Result } from '../models/Result';
 import { Router } from 'express';
 import { BaseRoute } from './baseRoute';
+import { inject, injectable } from 'inversify';
+import SERVICE_IDENTIFIERS from '../identities/identities';
+import { PreProcessor } from '../preprocessor';
+import { PersistanceManager } from '../db';
 
+@injectable()
 export class ParsingRoutes extends BaseRoute {
 
-    constructor(router: Router, db: Db | undefined) {
-        super(router, db);
+    private _preprocess: PreProcessor;
+    constructor(@inject(SERVICE_IDENTIFIERS.PREPROCESSOR) prepros: PreProcessor, 
+                @inject(SERVICE_IDENTIFIERS.DATABASE) pm: PersistanceManager) {
+        super(pm);
+
+        this._preprocess = prepros;
+    }
+    
+    initializeRouter(router: Router): void {
+        this._router = router;
     }
 
     configureRoutes(): void {
@@ -20,24 +29,23 @@ export class ParsingRoutes extends BaseRoute {
 
     private async parseFunctionEndpoint(req: any, res: any) {
         const config: any = req.body;
-        const models = config ? generateModel(config.sources) : [];
+        const models = config ? this._preprocess.generateModel(config.sources) : [];
     
-        models.length && resolveModelTransform(models);
+        models.length && this._preprocess.resolveModelTransform(models);
         const results: Array<Result> = [];
+        const collection: Collection | undefined = this._pm?.DB?.collection(process.env.COLLECTION_NAME as string);
         for (const model of models) {
             try {
-                await resolveDomStructureForModel(model).catch((err: any) => {
+                await this._preprocess.resolveDomStructureForModel(model).catch((err: any) => {
                     console.error(err);
                 });
                 const res: Result =  await model.Transform.transform().catch((error: any) => {
                     console.error(error);
                 });
                 for (const data of res?.Values) {
-                    const collection: Collection | undefined = this._db?.collection(process.env.COLLECTION_NAME as string);
                      collection?.find({'_name': data.Name}).toArray().then(docs => {
                         docs?.length < 1 && collection.insertOne(data);
                      });
-
                 }
                 results.push(res);
             } catch(e) {

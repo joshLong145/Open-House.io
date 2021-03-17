@@ -1,14 +1,14 @@
-import { Router } from "express";
-import { Db } from "mongodb";
+import { Router } from "express"
+import { injectable } from "inversify";
+import { PersistanceManager } from "../db";
 
 
-
+@injectable()
 export abstract class BaseRoute {
-    protected _router: Router;
-    protected _db: Db | undefined;
-    constructor(router: Router, db: Db | undefined) {
-        this._router = router;
-        this._db = db;
+    protected _router!: Router;
+    protected _pm: PersistanceManager | undefined;
+    constructor(pm: PersistanceManager | undefined) {
+        this._pm = pm;
     }
 
     get Router(): Router {
@@ -21,4 +21,5 @@ export abstract class BaseRoute {
     }
 
     abstract configureRoutes(): void;
+    abstract initializeRouter(router: Router): void;
 }
