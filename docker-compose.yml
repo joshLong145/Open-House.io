@@ -20,10 +20,6 @@ services:
     build:
       context: ./
       dockerfile: Dockerfile
-    ports:
-      - 5000:5000
-    depends_on: 
-      - mongo
 volumes:
   dbdata:
   dbconfig:
