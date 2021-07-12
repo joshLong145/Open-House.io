@@ -20,7 +20,7 @@ export class ADC extends Base {
                         //console.log(priceWrapper[0].textContent);
                         const resValue = new ResultValue();
                         resValue.Url = (urlWrapper as HTMLLinkElement)?.href || '';
-                        resValue.Name = addressWrapper?.textContent || '';
+                        resValue.Name = `${addressWrapper?.textContent} ${titleWrapper?.textContent}` || '';
 
                         if (priceWrapper?.textContent) {
                             const text: string = priceWrapper.textContent;

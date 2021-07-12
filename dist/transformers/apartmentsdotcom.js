@@ -24,29 +24,30 @@ var ADC = /** @class */ (function (_super) {
     ADC.prototype.transform = function () {
         var _this = this;
         return new Promise(function (resolve, reject) {
-            var _a, _b, _c;
+            var _a, _b, _c, _d, _e, _f, _g;
             var result = new Result_1.Result();
             try {
                 var listWrapper = (_a = _this.Dom) === null || _a === void 0 ? void 0 : _a.getElementById('placardContainer');
                 if (listWrapper) {
                     var list = listWrapper === null || listWrapper === void 0 ? void 0 : listWrapper.children[0];
-                    for (var _i = 0, _d = list.children; _i < _d.length; _i++) {
-                        var listing = _d[_i];
+                    for (var _i = 0, _h = list.children; _i < _h.length; _i++) {
+                        var listing = _h[_i];
                         var section = listing === null || listing === void 0 ? void 0 : listing.children[0];
-                        var addressWrapper = (_c = (_b = section === null || section === void 0 ? void 0 : section.children[0]) === null || _b === void 0 ? void 0 : _b.children[0]) === null || _c === void 0 ? void 0 : _c.children[0];
-                        var address;
-                        if (addressWrapper) {
-                            address = addressWrapper === null || addressWrapper === void 0 ? void 0 : addressWrapper.children[1];
-                            // console.log(address.textContent, addressWrapper.href);
-                        }
-                        var priceSection = section.children[1];
-                        var priceWrapper = priceSection.getElementsByClassName('price-range');
+                        var addressWrapper = (_b = section === null || section === void 0 ? void 0 : section.getElementsByClassName('property-address')) === null || _b === void 0 ? void 0 : _b.item(0);
+                        var titleWrapper = (_c = section === null || section === void 0 ? void 0 : section.getElementsByClassName('property-title')) === null || _c === void 0 ? void 0 : _c.item(0);
+                        var urlWrapper = (_d = section === null || section === void 0 ? void 0 : section.getElementsByClassName('property-link')) === null || _d === void 0 ? void 0 : _d.item(0);
+                        var priceSection = (_e = section === null || section === void 0 ? void 0 : section.getElementsByClassName('property-wrapper')) === null || _e === void 0 ? void 0 : _e.item(0);
+                        var priceWrapper = (_f = priceSection === null || priceSection === void 0 ? void 0 : priceSection.getElementsByClassName('price-range')) === null || _f === void 0 ? void 0 : _f.item(0);
                         //console.log(priceWrapper[0].textContent);
                         var resValue = new Result_1.ResultValue();
-                        resValue.Url = addressWrapper.href;
-                        resValue.Name = address.textContent;
-                        resValue.Price = parseInt(priceWrapper[0].textContent.split('-')[0].replace(',', '').replace('$', 0), 10)
-                            || 0;
+                        resValue.Url = ((_g = urlWrapper) === null || _g === void 0 ? void 0 : _g.href) || '';
+                        resValue.Name = (addressWrapper === null || addressWrapper === void 0 ? void 0 : addressWrapper.textContent) + " " + (titleWrapper === null || titleWrapper === void 0 ? void 0 : titleWrapper.textContent) || '';
+                        if (priceWrapper === null || priceWrapper === void 0 ? void 0 : priceWrapper.textContent) {
+                            var text = priceWrapper.textContent;
+                            var range = text.split('-');
+                            resValue.Price = range.length ? parseInt(range[0].replace(',', '').replace('$', ''), 10)
+                                : parseInt(text.replace(',', '').replace('$', ''), 10);
+                        }
                         result.Values.push(resValue);
                         resolve(result);
                     }
