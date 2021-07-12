@@ -1,12 +1,15 @@
 FROM node:12.18.1
-
 WORKDIR /app
 
 COPY package.json ./
-COPY dist/ ./
+COPY tsconfig.json ./
+COPY .env ./
+COPY src/ ./src
 
 RUN npm install 
-CMD ["node", "index.js"]
+RUN npm run build 
+
+CMD ["node", "-r", "dotenv/config", "dist/index.js"]
 
 
 

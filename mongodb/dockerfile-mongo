@@ -1,0 +1,6 @@
+FROM mongo
+
+COPY ./mongo.sh /home/mongo.sh
+RUN chmod 777 /home/mongo.sh
+
+CMD /home/mongo.sh
