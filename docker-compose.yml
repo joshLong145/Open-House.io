@@ -1,15 +1,11 @@
 version: '3.7'
 services:
   mongo:
-    build:
-      context: ./mongodb
-      dockerfile: dockerfile-mongo
+    image: mongo
     environment:
       MONGO_INITDB_ROOT_USERNAME: sardine
       MONGO_INITDB_ROOT_PASSWORD: coolDuck737
       MONGO_INITDB_DATABASE: housing
-      MONGODB_USERNAME: sardine
-      MONGODB_PASSWORD: coolDuck737
     ports:
       - 27017:27017
     volumes:
@@ -20,6 +16,8 @@ services:
     build:
       context: ./
       dockerfile: Dockerfile
+    ports:
+      - 5000:5000
 volumes:
   dbdata:
   dbconfig:
