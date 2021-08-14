@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc -p tsconfig.json --outDir ./dist"
+    "build": "tsc -p tsconfig.json --outDir ./dist",
+    "start": "node -r dotenv/config dist/index.js"
   },
   "keywords": [],
   "author": "",
