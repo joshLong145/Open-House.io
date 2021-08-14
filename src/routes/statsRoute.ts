@@ -2,7 +2,7 @@ import { Router } from "express";
 import { readdirSync } from "fs";
 import { inject, injectable } from "inversify";
 import { AggregationCursor, Collection, Db } from "mongodb";
-import { PersistanceManager } from "../db";
+import { PersistanceManager } from "../services/db";
 import SERVICE_IDENTIFIERS from "../identities/identities";
 import { BaseRoute } from "./baseRoute";
 

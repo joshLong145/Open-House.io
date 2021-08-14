@@ -1,11 +1,12 @@
-import { BaseTransformModel } from './models/base';
+import { BaseTransformModel } from '../models/base';
 import { 
    Zillow,
-} from './transformers/zillow';
-import {ADC} from './transformers/apartmentsdotcom';
+} from '../transformers/zillow';
+import {ADC} from '../transformers/apartmentsdotcom';
 import { JSDOM, VirtualConsole } from 'jsdom';
 import { injectable } from 'inversify';
-import { IService } from './interfaces/IService';
+import { IService } from '../interfaces/IService';
+import fetch from 'node-fetch'; 
 
 @injectable()
 export class PreProcessor implements IService {
@@ -61,14 +62,12 @@ export class PreProcessor implements IService {
     resolveDomStructureForModel(model: BaseTransformModel): Promise<BaseTransformModel> {
         return new Promise<BaseTransformModel>((resolve, reject) => {
             try {
-                const fetch = require('node-fetch');
-                const page: any = fetch(model.Data.url, {
+                fetch(model.Data.url, {
                     headers: {
                         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:77.0) Gecko/20100101 Firefox/77.0',
                         'Cookie': model.Cookie
                     }
-                });
-                page.then((resp: any) => {
+                }).then((resp: any) => {
                     return resp.text();
                 }).then((text: string) => {
                     try {

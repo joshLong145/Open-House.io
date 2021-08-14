@@ -1,6 +1,6 @@
 import { Router } from "express"
 import { injectable } from "inversify";
-import { PersistanceManager } from "../db";
+import { PersistanceManager } from "../services/db";
 
 
 @injectable()

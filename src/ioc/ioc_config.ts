@@ -3,11 +3,11 @@ import { Container } from "inversify";
 
 import { ParsingRoutes }from './../routes/parsing';
 import { StatsRoutes } from './../routes/statsRoute'
-import {PersistanceManager} from './../db';
+import {PersistanceManager} from '../services/db';
 import { IConnect } from '../interfaces/IConnect';
 import SERVICE_IDENTIFIERS from '../identities/identities';
 import { BaseRoute } from '../routes/baseRoute';
-import { PreProcessor } from '../preprocessor';
+import { PreProcessor } from '../services/preprocessor';
 import { IService } from '../interfaces/IService';
 import { makeLoggerMiddleware } from "inversify-logger-middleware";
 

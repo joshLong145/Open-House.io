@@ -4,8 +4,8 @@ import { Router } from 'express';
 import { BaseRoute } from './baseRoute';
 import { inject, injectable } from 'inversify';
 import SERVICE_IDENTIFIERS from '../identities/identities';
-import { PreProcessor } from '../preprocessor';
-import { PersistanceManager } from '../db';
+import { PreProcessor } from '../services/preprocessor';
+import { PersistanceManager } from '../services/db';
 
 @injectable()
 export class ParsingRoutes extends BaseRoute {
