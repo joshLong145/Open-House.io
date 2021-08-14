@@ -1,6 +1,6 @@
 import {Db, MongoClient} from 'mongodb';
 import { injectable } from "inversify";
-import { IConnect } from './interfaces/IConnect';
+import { IConnect } from '../interfaces/IConnect';
 
 
 @injectable()

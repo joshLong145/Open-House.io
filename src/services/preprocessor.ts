@@ -1,11 +1,11 @@
-import { BaseTransformModel } from './models/base';
+import { BaseTransformModel } from '../models/base';
 import { 
    Zillow,
-} from './transformers/zillow';
-import {ADC} from './transformers/apartmentsdotcom';
+} from '../transformers/zillow';
+import {ADC} from '../transformers/apartmentsdotcom';
 import { JSDOM, VirtualConsole } from 'jsdom';
 import { injectable } from 'inversify';
-import { IService } from './interfaces/IService';
+import { IService } from '../interfaces/IService';
 
 @injectable()
 export class PreProcessor implements IService {
