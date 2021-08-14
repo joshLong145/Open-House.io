@@ -1,9 +1,57 @@
+import exp from 'constants';
 import SERVICE_IDENTIFIERS from '../../src/identities/identities';
 import { IService } from '../../src/interfaces/IService';
 import container from '../../src/ioc/ioc_config';
+import { BaseTransformModel } from '../../src/models/base';
+import { PreProcessor } from '../../src/services/preprocessor';
 
 describe('pre-processor', () => {
     let preProcessor: IService;
+    let mockRequest = {
+        "sources": [
+            {
+                "url": "https://www.zillow.com/fort-lee-nj/rentals/1-_beds/?searchQueryState=%7B%22pagination%22%3A%7B%7D%2C%22usersSearchTerm%22%3A%22fortlee%22%2C%22mapBounds%22%3A%7B%22west%22%3A-74.02006495275879%2C%22east%22%3A-73.91964304724121%2C%22south%22%3A40.822151314286685%2C%22north%22%3A40.874416837356854%7D%2C%22regionSelection%22%3A%5B%7B%22regionId%22%3A11491%2C%22regionType%22%3A6%7D%5D%2C%22isMapVisible%22%3Atrue%2C%22filterState%22%3A%7B%22fsba%22%3A%7B%22value%22%3Afalse%7D%2C%22fsbo%22%3A%7B%22value%22%3Afalse%7D%2C%22nc%22%3A%7B%22value%22%3Afalse%7D%2C%22fore%22%3A%7B%22value%22%3Afalse%7D%2C%22cmsn%22%3A%7B%22value%22%3Afalse%7D%2C%22auc%22%3A%7B%22value%22%3Afalse%7D%2C%22fr%22%3A%7B%22value%22%3Atrue%7D%2C%22ah%22%3A%7B%22value%22%3Atrue%7D%2C%22beds%22%3A%7B%22min%22%3A1%7D%7D%2C%22isListVisible%22%3Atrue%2C%22mapZoom%22%3A14%7D",
+                "Cookies": "zguid=23|%24875004a7-2da0-4013-83d9-9575424e2a28; zjs_anonymous_id=%22875004a7-2da0-4013-83d9-9575424e2a28%22; zjs_user_id=null; AWSALB=R55sk9o73G313OMUppOCgauk5kf25CjlJ6JWRSM7ES2n6VC6De/WZbJXsSZFFX3KZE7jzNSJtwNvjDDCbC5paHVhWd1q6JsRYSFHCDLCRznv9kEYQ0HiMr5IwP8T; AWSALBCORS=R55sk9o73G313OMUppOCgauk5kf25CjlJ6JWRSM7ES2n6VC6De/WZbJXsSZFFX3KZE7jzNSJtwNvjDDCbC5paHVhWd1q6JsRYSFHCDLCRznv9kEYQ0HiMr5IwP8T; _ga=GA1.2.117306293.1609369617; _gid=GA1.2.1993337270.1609369617; _pxvid=b6c05c3b-4af3-11eb-977c-0242ac120007; _gcl_au=1.1.394352622.1609369617; KruxPixel=true; _pin_unauth=dWlkPU1UQmtZMlpoWkRjdE9XUXdaaTAwWTJWa0xXSTJNek10TmpJMU5UUm1aVFptTlRReA; _fbp=fb.1.1609369617731.17045799; KruxAddition=true; zgsession=1|6346e6a1-2f2b-49b7-8905-263ae138cebd; JSESSIONID=2C35211397BCC18F3E144E9170120B0D; DoubleClickSession=true; _px3=121b0eaecb218d09bd6e3f0dee44931b98078faf79b03dab17723f1e1891a5e3:EJ5kugMI7zEmBIOx5NIRorYRW+d0Lkh4OsRc7bOsawWe3stSWfVbMC6KE7o5Go6kx3EVIKmiHErGuuKnloMDzg==:1000:qFMdCk6RvM/+U36+xPylpfwT5/pPDmwKEOTs6MZC5ad+nutPlGNEWVGNqSoGuwPPeEjE9JQ0xKUsGtoSntdq6gHWzYiOFpqZuAU1O1gW9UxSWFOucLHEv4JVUB2PCO5qyNgtJo8ZCiFe8auwvHDU+341Zm9vP4QTdskz5DIkPSI=; search=6|1612039459929%7Crect%3D40.92380368648092%252C-74.00980130395509%252C40.84814291707461%252C-74.08361569604493%26rid%3D38835%26disp%3Dmap%26mdm%3Dauto%26p%3D1%26sort%3Ddays%26z%3D1%26fs%3D0%26fr%3D1%26mmm%3D0%26rs%3D0%26ah%3D0%26singlestory%3D0%26housing-connector%3D0%26abo%3D0%26garage%3D0%26pool%3D0%26ac%3D0%26waterfront%3D0%26finished%3D0%26unfinished%3D0%26cityview%3D0%26mountainview%3D0%26parkview%3D0%26waterview%3D0%26hoadata%3D1%26zillow-owned%3D0%263dhome%3D0%09%0938835%09%09%09%09%09%09; _uetsid=b70c34a04af311eba063114de3461396; _uetvid=b70c42904af311eba5b78d7e9a7067f3; ki_t=1609447462692%3B1609447462692%3B1609447462692%3B1%3B1; ki_r=; __gads=ID=e9eb8629fee89cd7-22d0016286b80001:T=1609447463:S=ALNI_MZtzcxMZgpiAy3eVnBF-MEWUquhHQ",
+                "limit": 20,
+                "price_upper": 2000,
+                "transformer": "zillow"
+    
+            },
+            {
+                "url": "https://www.zillow.com/hackensack-nj/rentals/?searchQueryState=%7B%22pagination%22%3A%7B%7D%2C%22usersSearchTerm%22%3A%22Hackensack%2C%20NJ%22%2C%22mapBounds%22%3A%7B%22west%22%3A-74.14798871240235%2C%22east%22%3A-73.94542828759766%2C%22south%22%3A40.83561096422207%2C%22north%22%3A40.93631895090304%7D%2C%22regionSelection%22%3A%5B%7B%22regionId%22%3A38835%2C%22regionType%22%3A6%7D%5D%2C%22isMapVisible%22%3Atrue%2C%22filterState%22%3A%7B%22fsba%22%3A%7B%22value%22%3Afalse%7D%2C%22fsbo%22%3A%7B%22value%22%3Afalse%7D%2C%22nc%22%3A%7B%22value%22%3Afalse%7D%2C%22fore%22%3A%7B%22value%22%3Afalse%7D%2C%22cmsn%22%3A%7B%22value%22%3Afalse%7D%2C%22auc%22%3A%7B%22value%22%3Afalse%7D%2C%22pmf%22%3A%7B%22value%22%3Afalse%7D%2C%22pf%22%3A%7B%22value%22%3Afalse%7D%2C%22fr%22%3A%7B%22value%22%3Atrue%7D%2C%22ah%22%3A%7B%22value%22%3Atrue%7D%7D%2C%22isListVisible%22%3Atrue%2C%22mapZoom%22%3A13%7D",
+                "Cookie":"zguid=23|%24875004a7-2da0-4013-83d9-9575424e2a28; zjs_anonymous_id=%22875004a7-2da0-4013-83d9-9575424e2a28%22; zjs_user_id=null; AWSALB=R55sk9o73G313OMUppOCgauk5kf25CjlJ6JWRSM7ES2n6VC6De/WZbJXsSZFFX3KZE7jzNSJtwNvjDDCbC5paHVhWd1q6JsRYSFHCDLCRznv9kEYQ0HiMr5IwP8T; AWSALBCORS=R55sk9o73G313OMUppOCgauk5kf25CjlJ6JWRSM7ES2n6VC6De/WZbJXsSZFFX3KZE7jzNSJtwNvjDDCbC5paHVhWd1q6JsRYSFHCDLCRznv9kEYQ0HiMr5IwP8T; _ga=GA1.2.117306293.1609369617; _gid=GA1.2.1993337270.1609369617; _pxvid=b6c05c3b-4af3-11eb-977c-0242ac120007; _gcl_au=1.1.394352622.1609369617; KruxPixel=true; _pin_unauth=dWlkPU1UQmtZMlpoWkRjdE9XUXdaaTAwWTJWa0xXSTJNek10TmpJMU5UUm1aVFptTlRReA; _fbp=fb.1.1609369617731.17045799; KruxAddition=true; zgsession=1|6346e6a1-2f2b-49b7-8905-263ae138cebd; JSESSIONID=2C35211397BCC18F3E144E9170120B0D; DoubleClickSession=true; _px3=121b0eaecb218d09bd6e3f0dee44931b98078faf79b03dab17723f1e1891a5e3:EJ5kugMI7zEmBIOx5NIRorYRW+d0Lkh4OsRc7bOsawWe3stSWfVbMC6KE7o5Go6kx3EVIKmiHErGuuKnloMDzg==:1000:qFMdCk6RvM/+U36+xPylpfwT5/pPDmwKEOTs6MZC5ad+nutPlGNEWVGNqSoGuwPPeEjE9JQ0xKUsGtoSntdq6gHWzYiOFpqZuAU1O1gW9UxSWFOucLHEv4JVUB2PCO5qyNgtJo8ZCiFe8auwvHDU+341Zm9vP4QTdskz5DIkPSI=; search=6|1612039459929%7Crect%3D40.92380368648092%252C-74.00980130395509%252C40.84814291707461%252C-74.08361569604493%26rid%3D38835%26disp%3Dmap%26mdm%3Dauto%26p%3D1%26sort%3Ddays%26z%3D1%26fs%3D0%26fr%3D1%26mmm%3D0%26rs%3D0%26ah%3D0%26singlestory%3D0%26housing-connector%3D0%26abo%3D0%26garage%3D0%26pool%3D0%26ac%3D0%26waterfront%3D0%26finished%3D0%26unfinished%3D0%26cityview%3D0%26mountainview%3D0%26parkview%3D0%26waterview%3D0%26hoadata%3D1%26zillow-owned%3D0%263dhome%3D0%09%0938835%09%09%09%09%09%09; _uetsid=b70c34a04af311eba063114de3461396; _uetvid=b70c42904af311eba5b78d7e9a7067f3; ki_t=1609447462692%3B1609447462692%3B1609447462692%3B1%3B1; ki_r=; __gads=ID=e9eb8629fee89cd7-22d0016286b80001:T=1609447463:S=ALNI_MZtzcxMZgpiAy3eVnBF-MEWUquhHQ",
+                "limit": 20,
+                "price_upper": 2000,
+                "transformer": "zillow"
+            },
+            {
+                "url": "https://www.zillow.com/homes/Mahwah-Township,-NJ_rb/",
+                "Cookie":"zguid=23|%24875004a7-2da0-4013-83d9-9575424e2a28; zjs_anonymous_id=%22875004a7-2da0-4013-83d9-9575424e2a28%22; zjs_user_id=null; AWSALB=R55sk9o73G313OMUppOCgauk5kf25CjlJ6JWRSM7ES2n6VC6De/WZbJXsSZFFX3KZE7jzNSJtwNvjDDCbC5paHVhWd1q6JsRYSFHCDLCRznv9kEYQ0HiMr5IwP8T; AWSALBCORS=R55sk9o73G313OMUppOCgauk5kf25CjlJ6JWRSM7ES2n6VC6De/WZbJXsSZFFX3KZE7jzNSJtwNvjDDCbC5paHVhWd1q6JsRYSFHCDLCRznv9kEYQ0HiMr5IwP8T; _ga=GA1.2.117306293.1609369617; _gid=GA1.2.1993337270.1609369617; _pxvid=b6c05c3b-4af3-11eb-977c-0242ac120007; _gcl_au=1.1.394352622.1609369617; KruxPixel=true; _pin_unauth=dWlkPU1UQmtZMlpoWkRjdE9XUXdaaTAwWTJWa0xXSTJNek10TmpJMU5UUm1aVFptTlRReA; _fbp=fb.1.1609369617731.17045799; KruxAddition=true; zgsession=1|6346e6a1-2f2b-49b7-8905-263ae138cebd; JSESSIONID=2C35211397BCC18F3E144E9170120B0D; DoubleClickSession=true; _px3=121b0eaecb218d09bd6e3f0dee44931b98078faf79b03dab17723f1e1891a5e3:EJ5kugMI7zEmBIOx5NIRorYRW+d0Lkh4OsRc7bOsawWe3stSWfVbMC6KE7o5Go6kx3EVIKmiHErGuuKnloMDzg==:1000:qFMdCk6RvM/+U36+xPylpfwT5/pPDmwKEOTs6MZC5ad+nutPlGNEWVGNqSoGuwPPeEjE9JQ0xKUsGtoSntdq6gHWzYiOFpqZuAU1O1gW9UxSWFOucLHEv4JVUB2PCO5qyNgtJo8ZCiFe8auwvHDU+341Zm9vP4QTdskz5DIkPSI=; search=6|1612039459929%7Crect%3D40.92380368648092%252C-74.00980130395509%252C40.84814291707461%252C-74.08361569604493%26rid%3D38835%26disp%3Dmap%26mdm%3Dauto%26p%3D1%26sort%3Ddays%26z%3D1%26fs%3D0%26fr%3D1%26mmm%3D0%26rs%3D0%26ah%3D0%26singlestory%3D0%26housing-connector%3D0%26abo%3D0%26garage%3D0%26pool%3D0%26ac%3D0%26waterfront%3D0%26finished%3D0%26unfinished%3D0%26cityview%3D0%26mountainview%3D0%26parkview%3D0%26waterview%3D0%26hoadata%3D1%26zillow-owned%3D0%263dhome%3D0%09%0938835%09%09%09%09%09%09; _uetsid=b70c34a04af311eba063114de3461396; _uetvid=b70c42904af311eba5b78d7e9a7067f3; ki_t=1609447462692%3B1609447462692%3B1609447462692%3B1%3B1; ki_r=; __gads=ID=e9eb8629fee89cd7-22d0016286b80001:T=1609447463:S=ALNI_MZtzcxMZgpiAy3eVnBF-MEWUquhHQ",
+                "limit": 20,
+                "price_upper": 2000,
+                "transformer": "zillow"
+            },
+            {
+                "url": "https://www.apartments.com/hackensack-nj/1-bedrooms-under-2100/?bb=vp_w10qzwHisv6gN",
+                "limit": 20,
+                "price_upper": 2000,
+                "transformer": "ADC"
+            },
+                    {
+                "url": "https://www.apartments.com/fort-lee-nj/?bb=uiruur6qwHqvynhc",
+                "limit": 20,
+                "price_upper": 2000,
+                "transformer": "ADC"
+            },
+            {
+                "url": "https://www.apartments.com/verona-nj/",
+                "limit": 20,
+                "price_upper": 2000,
+                "transformer": "ADC"
+            }
+        ]
+    };
+
     beforeEach(() => {
         preProcessor = container.get<IService>(SERVICE_IDENTIFIERS.PREPROCESSOR);
     });
@@ -11,4 +59,21 @@ describe('pre-processor', () => {
     test('should be defined', () => {
         expect(preProcessor).toBeDefined();
     });
+    
+    test('Should resolve correct transformer', () => {
+        const models: BaseTransformModel[]  = (preProcessor as PreProcessor).generateModel(mockRequest.sources);
+        (preProcessor as PreProcessor).resolveModelTransform(models);
+        for (const model of models) {
+            expect(model.Transform).toBeDefined();
+        }
+    });
+
+    test('DOM should be defined after parse', async () => {
+        const models: BaseTransformModel[]  = (preProcessor as PreProcessor).generateModel(mockRequest.sources);
+        (preProcessor as PreProcessor).resolveModelTransform(models);
+        for (const model of models) {
+            const result: BaseTransformModel = await (preProcessor as PreProcessor).resolveDomStructureForModel(model);
+            expect(result.Transform.Dom).toBeDefined();
+        }
+    }, 30000);
 });
