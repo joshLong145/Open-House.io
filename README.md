@@ -1,19 +1,26 @@
-# open-house.io
+# Open-House.io
 ![CI](https://github.com/joshLong145/housingDataScrape/workflows/Node.js%20CI/badge.svg)
-## Overview
-Applicattion for scraping housing / apartment rental data from multiple origins through extendable data  transformers. MongoDB is used for data persistance. 
 
-### support the following origins
+Allows for data injest from multiple origins to document store based persistence layer.
+
+Currenly the transformers for site layouts are statically included 
+
+### supports the following layouts
 
     * Zillow
     * ApartmentsDotCom
 
-## Configuring 
-see `env_sample` for 
+## Configuring
+Create a new `.env` at root of repository.
+See `env_sample` for defaults.
 
-### Running 
-Prebuilt artifacts are included, to run the api execute the following `node dist/index.js <path to configuration file>`. API can also be run from the included docker file. port specified should be forwarded out of the container.
+## Building
+Depedencies should be installed before building.
+`npm run build` will run the tsc and output files to the `dist` directory.
 
-### Building
-`npm run build` will run the tsc and output files to the `dist` directory. please see above foor instructions on how to run.
+See `tsconfig.json` for specific configuration settings.
 
+## Developing
+We now support development within containers. see `.devcontainer`
+
+requires both Docker, and Docker-Compose
