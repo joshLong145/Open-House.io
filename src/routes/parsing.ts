@@ -34,25 +34,41 @@ export class ParsingRoutes extends BaseRoute {
         models.length && this._preprocess.resolveModelTransform(models);
         const results: Array<Result> = [];
         const collection: Collection | undefined = this._pm?.DB?.collection(process.env.COLLECTION_NAME as string);
-        for (const model of models) {
-            try {
-                await this._preprocess.resolveDomStructureForModel(model).catch((err: any) => {
-                    console.error(err);
-                });
-                const res: Result =  await model.Transform.transform().catch((error: any) => {
-                    console.error(error);
-                });
-                for (const data of res?.Values) {
-                     collection?.find({'_name': data.Name}).toArray().then(docs => {
-                        docs?.length < 1 && collection.insertOne(data);
-                     });
+        const resolverWrapper = (model: any) => {
+            return new Promise<Result>((resolve, reject) => {
+                try {
+                    this._preprocess.resolveDomStructureForModel(model).then(() => {
+                        model.Transform.transform().then((res: Result) => {
+                            for (const data of res?.Values) {
+                                collection?.find({'_name': data.Name}).toArray().then(docs => {
+                                   docs?.length < 1 && collection.insertOne(data);
+                                });
+                           }
+
+                          resolve(res);
+                        }).catch((error: any) => {
+                            console.error(error);
+                            resolve(new Result());
+                        });
+                    }).catch((err: any) => {
+                        console.error(err);
+                        resolve(new Result());
+                    });
+                } catch(e) {
+                    resolve(new Result());
                 }
-                results.push(res);
-            } catch(e) {
-                console.error(e);
-            }
+            });
+        };
+        const resPromises: Promise<Result>[] = [];
+
+        for (const model of models) {
+            resPromises.push(resolverWrapper(model));
         }
-        res.status(200).send(results);
+
+        Promise.all(resPromises).then((results: Result[]) => {
+            res.status(200).send(results);
+        }).catch((reson: any) => {
+        });
     }
     
 }
