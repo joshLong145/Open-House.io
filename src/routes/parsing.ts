@@ -1,5 +1,5 @@
 import {Collection, Db} from 'mongodb';
-import { Result } from '../models/Result';
+import { RentalDataValue, Result } from '../models/Result';
 import { Router } from 'express';
 import { BaseRoute } from './baseRoute';
 import { inject, injectable } from 'inversify';
@@ -32,13 +32,13 @@ export class ParsingRoutes extends BaseRoute {
         const models = config ? this._preprocess.generateModel(config.sources) : [];
     
         models.length && this._preprocess.resolveModelTransform(models);
-        const results: Array<Result> = [];
+        const results: Array<Result<RentalDataValue>> = [];
         const collection: Collection | undefined = this._pm?.DB?.collection(process.env.COLLECTION_NAME as string);
         const resolverWrapper = (model: any) => {
-            return new Promise<Result>((resolve, reject) => {
+            return new Promise<Result<RentalDataValue>>((resolve, reject) => {
                 try {
                     this._preprocess.resolveDomStructureForModel(model).then(() => {
-                        model.Transform.transform().then((res: Result) => {
+                        model.Transform.transform().then((res: Result<RentalDataValue>) => {
                             for (const data of res?.Values) {
                                 collection?.find({'_name': data.Name}).toArray().then(docs => {
                                    docs?.length < 1 && collection.insertOne(data);
@@ -59,13 +59,13 @@ export class ParsingRoutes extends BaseRoute {
                 }
             });
         };
-        const resPromises: Promise<Result>[] = [];
+        const resPromises: Promise<Result<RentalDataValue>>[] = [];
 
         for (const model of models) {
             resPromises.push(resolverWrapper(model));
         }
 
-        Promise.all(resPromises).then((results: Result[]) => {
+        Promise.all(resPromises).then((results: Result<RentalDataValue>[]) => {
             res.status(200).send(results);
         }).catch((reson: any) => {
         });

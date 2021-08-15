@@ -1,3 +1,5 @@
+import { Base } from "../transformers/base";
+
 export class BaseTransformModel {
     private _data: any;
     get Data() { return this._data; }
@@ -5,7 +7,7 @@ export class BaseTransformModel {
     private _dataParseLimit: number;
     get DataParseLimit() { return this._dataParseLimit; }
     
-    private _dataParseResult: any;
+    private _dataParseResult?: any; // TODO: Create abstract base for data parse result
     get DataParseResult() { return this._dataParseLimit; }
     set DataParseResult(value: any) { this._dataParseResult = value; }
     
@@ -15,7 +17,7 @@ export class BaseTransformModel {
     private _price: number;
     get Price(): number { return this._price; }
 
-    private _transform: any;
+    private _transform?: Base;
     public get Transform() { return this._transform; }
     public set Transform(value: any) { this._transform = value; }
 
