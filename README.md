@@ -1,5 +1,5 @@
 # Open-House.io
-![CI](https://github.com/joshLong145/housingDataScrape/workflows/Node.js%20CI/badge.svg)
+![CI](https://github.com/joshLong145/housingDataScrape/workflows/Node.js%20CI/badge.svg) [![jest-testing](https://github.com/joshLong145/Open-House.io/actions/workflows/jest-testing.yml/badge.svg?branch=master)](https://github.com/joshLong145/Open-House.io/actions/workflows/jest-testing.yml)
 
 Allows for data injest from multiple origins to document store based persistence layer.
 
