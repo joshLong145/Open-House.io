@@ -1,10 +1,10 @@
 import { Base } from './base';
-import { Result, ResultValue } from './../models/Result';
-import { response } from 'express';
+import { RentalDataValue, Result } from './../models/Result';
+
 export class ADC extends Base {
     transform() {
-        return new Promise<Result>((resolve, reject) => {
-            const result: Result = new Result();
+        return new Promise<Result<RentalDataValue>>((resolve, reject) => {
+            const result: Result<RentalDataValue> = new Result();
             try {
                 const listWrapper: any = this.Dom?.getElementById('placardContainer');
                 if (listWrapper) {
@@ -18,7 +18,7 @@ export class ADC extends Base {
                         const priceSection: Element | null = section?.getElementsByClassName('property-wrapper')?.item(0);
                         const priceWrapper: Element | null | undefined = priceSection?.getElementsByClassName('price-range')?.item(0);
                         //console.log(priceWrapper[0].textContent);
-                        const resValue = new ResultValue();
+                        const resValue = new RentalDataValue();
                         resValue.Url = (urlWrapper as HTMLLinkElement)?.href || '';
                         resValue.Name = `${addressWrapper?.textContent} ${titleWrapper?.textContent}` || '';
 
