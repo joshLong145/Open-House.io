@@ -15,8 +15,8 @@ const container: Container = new Container();
 let logger = makeLoggerMiddleware();
 container.applyMiddleware(logger);
 
-container.bind<IConnect>(SERVICE_IDENTIFIERS.DATABASE).to(PersistanceManager);
-container.bind<IService>(SERVICE_IDENTIFIERS.PREPROCESSOR).to(PreProcessor);
+container.bind<IConnect>(SERVICE_IDENTIFIERS.DATABASE).to(PersistanceManager).inSingletonScope();
+container.bind<IService>(SERVICE_IDENTIFIERS.PREPROCESSOR).to(PreProcessor).inSingletonScope();
 
 container.bind<BaseRoute>(SERVICE_IDENTIFIERS.ROUTES).to(ParsingRoutes).whenTargetNamed('parsing');
 container.bind<BaseRoute>(SERVICE_IDENTIFIERS.ROUTES).to(StatsRoutes).whenTargetNamed('stats');

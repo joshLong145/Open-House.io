@@ -39,17 +39,13 @@ export class ParsingRoutes extends BaseRoute {
                 try {
                     this._preprocess.resolveDomStructureForModel(model).then(() => {
                         model.Transform.transform().then((res: Result) => {
-                            for (const data of res?.Values) {
-                                collection?.find({'_name': data.Name}).toArray().then(docs => {
-                                   docs?.length < 1 && collection.insertOne(data);
-                                });
-                           }
-
-                          resolve(res);
-                        }).catch((error: any) => {
-                            console.error(error);
-                            resolve(new Result());
+                            this._pm?.storeAsync(collection, res.Values);
                         });
+                        
+                        resolve(res);
+                    }).catch((error: any) => {
+                        console.error(error);
+                        resolve(new Result());
                     }).catch((err: any) => {
                         console.error(err);
                         resolve(new Result());

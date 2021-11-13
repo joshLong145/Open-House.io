@@ -1,4 +1,4 @@
-import {Db, MongoClient} from 'mongodb';
+import {AggregationCursor, Collection, Db, MongoClient} from 'mongodb';
 import { injectable } from "inversify";
 import { IConnect } from '../interfaces/IConnect';
 
@@ -44,6 +44,40 @@ export class PersistanceManager implements IConnect {
             console.error(e);
         }
     }
+
+    public storeAsync<T>(collection: Collection | undefined, data: Array<T>): void {
+        collection && data.forEach((item: T) => {
+            collection?.find({'_name': (item as any).Name}).toArray().then((docs: any) => {
+                docs?.length < 1 && collection.insertOne(data);
+            });
+        });
+    }
+
+    public generateCursorForAveraging(collection: Collection, param: string): AggregationCursor {
+        try {
+            return collection?.aggregate([
+                {
+                    $addFields: {
+                        results: {
+                        $regexFindAll: { 
+                            input: "$_name", 
+                            regex: `/${param}/g`
+                            },
+                        }
+                    }
+                },
+                {
+                    $group: {
+                        _id:null,
+                        avg: { $avg:"$_price" },
+                        count: {$sum: 1}
+                    }
+            }]);
+        } catch (e: Exception) {
+            console.error("Error while Querying average", e);
+        }
+    }
+
     private static ConstructURI(): string {
         const uri: string 
             = `mongodb://${process.env.DB_USERNAME}:${process.env.DB_PASS}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`;
