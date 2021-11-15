@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest ",
     "build": "tsc -p tsconfig.json --outDir ./dist",
-    "start": "node -r dotenv/config dist/index.js"
+    "start": "node -r dotenv/config dist/src/index.js"
   },
   "keywords": [],
   "author": "",

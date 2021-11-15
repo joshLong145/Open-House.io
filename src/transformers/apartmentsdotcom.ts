@@ -8,29 +8,48 @@ export class ADC extends Base {
             try {
                 const listWrapper: any = this.Dom?.getElementById('placardContainer');
                 if (listWrapper) {
-                    const list: any = listWrapper?.children[0];
-                    for (const listing of list.children) {
-                        const section: HTMLElement = listing?.children[0];
+                    const list: HTMLElement = listWrapper?.children[0];
+                    for (let i = 0; i < list.children.length; i++) {
+                        console.log("parsing list item");
+                        const section: HTMLElement = list.children[i].children[0] as HTMLElement;
                         const addressWrapper: Element | null = section?.getElementsByClassName('property-address')?.item(0);
                         const titleWrapper: Element | null = section?.getElementsByClassName('property-title')?.item(0);
                         const urlWrapper: Element | null = section?.getElementsByClassName('property-link')?.item(0);
+                        var priceQuery: HTMLCollection = list.children[i].getElementsByTagName("p");
+                        var price: string = "";
+                        console.log(priceQuery.length);
+                        if (priceQuery !== null)
+                            for (let p = 0; p < priceQuery.length; p++) {
+                                const text = priceQuery[p] ? priceQuery[p].textContent : "";
+                                if(text && text?.indexOf("$") > -1)
+                                {
+                                    console.log(text);
+                                    price = text;
+                                }
 
-                        const priceSection: Element | null = section?.getElementsByClassName('property-wrapper')?.item(0);
-                        const priceWrapper: Element | null | undefined = priceSection?.getElementsByClassName('price-range')?.item(0);
-                        //console.log(priceWrapper[0].textContent);
-                        const resValue = new ResultValue();
-                        resValue.Url = (urlWrapper as HTMLLinkElement)?.href || '';
-                        resValue.Name = `${addressWrapper?.textContent} ${titleWrapper?.textContent}` || '';
-
-                        if (priceWrapper?.textContent) {
-                            const text: string = priceWrapper.textContent;
-                            const range:string[] = text.split('-')
-                            resValue.Price = range.length ? parseInt(range[0].replace(',', '').replace('$', ''), 10) 
-                            : parseInt(text.replace(',', '').replace('$', ''), 10);
+                                price = price.indexOf(" - ") > 0 ? price.split(" - ")[0] : price;
+                                price = price.replace("$", "").replace(",", "");
+                                console.log(text);
+                                const resValue = new ResultValue();
+                                resValue.Url = (urlWrapper as HTMLLinkElement)?.href || '';
+                                resValue.Name = `${addressWrapper?.textContent} ${titleWrapper?.textContent}` || '';
+        
+                                if (price) {
+                                    resValue.Price = parseInt(price, 10);
+                                }
+                                result.Values.push(resValue);
+                            }
+                        else {
+                            console.log("unable to resolve pricing data");
+                            const resValue = new ResultValue();
+                            resValue.Url = (urlWrapper as HTMLLinkElement)?.href || '';
+                            resValue.Name = `${addressWrapper?.textContent} ${titleWrapper?.textContent}` || '';
+                            
+                            result.Values.push(resValue);
                         }
-                        result.Values.push(resValue);
-                        resolve(result);
                     }
+
+                    resolve(result);
                 } else {
                     console.info('no list content ... ');
                     resolve(result);

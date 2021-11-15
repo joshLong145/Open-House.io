@@ -16,12 +16,14 @@ export class Zillow extends Base {
                         if(outerWrapper.length) {
                             const div = outerWrapper[0].getElementsByClassName('list-card-info');
                             const aTagWrapper = div[0].children[0]
-                            const name = aTagWrapper.children[0].textContent;
+                            const name = aTagWrapper?.children[0]?.textContent;
                             if (div.length) { 
                                 const priceWrapper = div[0].getElementsByClassName('list-card-price');
-                                var price = priceWrapper[0].textContent || '';
+                                var price: string | null = priceWrapper.length ? priceWrapper[0].textContent : "";
+
                                 price = this.prasePrice(price);
                                 const resValue = new ResultValue();
+
                                 resValue.Url = (aTagWrapper as any).href; // force type cast because i dont know why this is not a property on the type decleration.
                                 resValue.Name = name || '';
                                 resValue.Price = parseInt(price.replace('$', '').replace(',', ''), 10) || 0;
@@ -41,9 +43,9 @@ export class Zillow extends Base {
         });
     }
 
-    prasePrice(price: string): string { 
-        const result: any = price.match(/(\$[0-9,]+(\.[0-9]{2})?)/);
-        return result[0];
+    prasePrice(price: string | null): string { 
+        const result: any = price?.match(/(\$[0-9,]+(\.[0-9]{2})?)/);
+        return result != null ? result[0] : "";
     }
 
     public constructor() {

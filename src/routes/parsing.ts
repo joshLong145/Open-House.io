@@ -38,11 +38,11 @@ export class ParsingRoutes extends BaseRoute {
             return new Promise<Result>((resolve, reject) => {
                 try {
                     this._preprocess.resolveDomStructureForModel(model).then(() => {
-                        model.Transform.transform().then((res: Result) => {
-                            this._pm?.storeAsync(collection, res.Values);
+                        model.Transform.transform().then((transformResult: Result) => {
+                            
+                            this._pm?.storeAsync(collection, transformResult.Values);
+                            resolve(transformResult);
                         });
-                        
-                        resolve(res);
                     }).catch((error: any) => {
                         console.error(error);
                         resolve(new Result());
@@ -62,8 +62,10 @@ export class ParsingRoutes extends BaseRoute {
         }
 
         Promise.all(resPromises).then((results: Result[]) => {
+            console.log("All transformers have resolved: ", results);
             res.status(200).send(results);
         }).catch((reson: any) => {
+            console.error(reson);
         });
     }
     

@@ -9,8 +9,8 @@ export class PersistanceManager implements IConnect {
     private static _client: MongoClient | undefined;
 
     constructor() {
-        console.log('Presistance Manager');
-        setTimeout(this.connect, 10000);
+        console.log('Establishing database connection');
+        setTimeout(this.connect, 1000);
     }
 
     async connect() {
@@ -47,13 +47,18 @@ export class PersistanceManager implements IConnect {
 
     public storeAsync<T>(collection: Collection | undefined, data: Array<T>): void {
         collection && data.forEach((item: T) => {
+            if (typeof(item) !== 'object')
+            {
+                console.error("Cannot store non object: ", data);
+                return;
+            }
             collection?.find({'_name': (item as any).Name}).toArray().then((docs: any) => {
-                docs?.length < 1 && collection.insertOne(data);
+                docs?.length < 1 && collection.insertOne(item);
             });
         });
     }
 
-    public generateCursorForAveraging(collection: Collection, param: string): AggregationCursor {
+    public generateCursorForAveraging(collection: Collection, param: string): AggregationCursor | undefined {
         try {
             return collection?.aggregate([
                 {
@@ -73,7 +78,7 @@ export class PersistanceManager implements IConnect {
                         count: {$sum: 1}
                     }
             }]);
-        } catch (e: Exception) {
+        } catch (e: any) {
             console.error("Error while Querying average", e);
         }
     }
