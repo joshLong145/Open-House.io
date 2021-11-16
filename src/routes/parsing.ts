@@ -38,7 +38,7 @@ export class ParsingRoutes extends BaseRoute {
             return new Promise<Result<RentalDataValue>>((resolve, reject) => {
                 try {
                     this._preprocess.resolveDomStructureForModel(model).then(() => {
-                        model.Transform.transform().then((transformResult: Result) => {
+                        model.Transform.transform().then((transformResult: Result<RentalDataValue>) => {
                             
                             this._pm?.storeAsync(collection, transformResult.Values);
                             resolve(transformResult);
