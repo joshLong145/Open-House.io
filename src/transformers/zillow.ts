@@ -1,9 +1,9 @@
 import { Base } from './base';
-import { Result, ResultValue } from './../models/Result';
+import { RentalDataValue, Result } from './../models/Result';
 export class Zillow extends Base {
     transform() {
-        return new Promise<Result>((resolve, reject) => {
-            const result: Result = new Result();
+        return new Promise<Result<RentalDataValue>>((resolve, reject) => {
+            const result: Result <RentalDataValue> = new Result();
             try {
                 const listWrapper: HTMLElement | null | undefined = this.Dom?.getElementById('wrapper');
                 if (listWrapper) {
@@ -22,7 +22,7 @@ export class Zillow extends Base {
                                 var price: string | null = priceWrapper.length ? priceWrapper[0].textContent : "";
 
                                 price = this.prasePrice(price);
-                                const resValue = new ResultValue();
+                                const resValue = new RentalDataValue();
 
                                 resValue.Url = (aTagWrapper as any).href; // force type cast because i dont know why this is not a property on the type decleration.
                                 resValue.Name = name || '';

@@ -7,7 +7,7 @@ export class BaseTransformModel {
     private _dataParseLimit: number;
     get DataParseLimit() { return this._dataParseLimit; }
     
-    private _dataParseResult: any;
+    private _dataParseResult?: any; // TODO: Create abstract base for data parse result
     get DataParseResult() { return this._dataParseLimit; }
     set DataParseResult(value: any) { this._dataParseResult = value; }
     
