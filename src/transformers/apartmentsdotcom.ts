@@ -2,6 +2,7 @@ import { Base } from './base';
 import { Result, ResultValue } from './../models/Result';
 import { response } from 'express';
 export class ADC extends Base {
+    
     transform() {
         return new Promise<Result>((resolve, reject) => {
             const result: Result = new Result();
