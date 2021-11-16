@@ -29,7 +29,7 @@ export class ADC extends Base {
                             }
                         price = price.indexOf(" - ") > 0 ? price.split(" - ")[0] : price;
                         price = price.replace("$", "").replace(",", "");
-                        const resValue = new ResultValue();
+                        const resValue = new RentalDataValue();
                         resValue.Url = (urlWrapper as HTMLLinkElement)?.href || '';
                         resValue.Name = `${addressWrapper?.textContent} ${titleWrapper?.textContent}` || '';
 
