@@ -1,4 +1,4 @@
 
 export interface IConnect {
-    connect(): void;
+    connect: () => void;
 };

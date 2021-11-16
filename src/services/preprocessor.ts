@@ -4,21 +4,28 @@ import {
 } from '../transformers/zillow';
 import {ADC} from '../transformers/apartmentsdotcom';
 import { JSDOM, VirtualConsole } from 'jsdom';
-import { injectable } from 'inversify';
+import { inject, injectable } from 'inversify';
 import { IService } from '../interfaces/IService';
 import fetch from 'node-fetch'; 
+import { Logger } from 'winston';
+import SERVICE_IDENTIFIERS from '../identities/identities';
+import { ConsoleLoggerWrapper } from '../logging/ConsoleLoggerWrapper';
 
 @injectable()
 export class PreProcessor implements IService {
     name: string;
-    
-    constructor() {
+    logger: ConsoleLoggerWrapper;
+    constructor(@inject(SERVICE_IDENTIFIERS.LOGGER) logger: ConsoleLoggerWrapper) {
         this.name = 'Preprocess'
+        this.logger = logger;
     }
 
     generateModel(data: any[]): BaseTransformModel[] { 
+        this.logger.Log.info("starting model generation");
         const models: any[] = [];
+
         for (const entry of data) {
+            this.logger.Log.info("Resolving model of type for ", entry);
             const modelDef: BaseTransformModel 
                 = new BaseTransformModel(
                     entry, 
@@ -35,7 +42,6 @@ export class PreProcessor implements IService {
         try {
             const fs: any = require('fs');
             const stream: any = fs.readFileSync(__dirname + configPath, {encoding: 'utf8', flag: 'r'});
-            console.log(stream);
     
             return JSON.parse(stream);
         } catch (e) {
@@ -45,14 +51,13 @@ export class PreProcessor implements IService {
 
     resolveModelTransform(models: BaseTransformModel[]) {
         for (const model of models) {
+            this.logger.Log.info(`Resolving new transformer for model: ${model.Data.transformer}`);
             switch(model.Data.transformer) {
                 case "zillow":
-                    console.log("Resolving new transformer for model");
                     model.Transform = new Zillow();
                     break;
                 
                 case "ADC":
-                    console.log('Resolving new transformer for model');
                     model.Transform = new ADC();
                     break;
             } 
@@ -61,6 +66,7 @@ export class PreProcessor implements IService {
 
     resolveDomStructureForModel(model: BaseTransformModel): Promise<BaseTransformModel> {
         return new Promise<BaseTransformModel>((resolve, reject) => {
+
             try {
                 fetch(model.Data.url, {
                     headers: {
@@ -77,7 +83,7 @@ export class PreProcessor implements IService {
                             pretendToBeVisual: true,
                             virtualConsole: vc
                        });
-                        console.info("Resolved dom model for: ", model.Data.url);
+                       this.logger.Log.info(`Resolved dom model for: ${model.Data.uri}`);
                         model.Transform.Dom = dom ? dom.window.document : undefined;
                         resolve(model);
                     } catch(e) 
