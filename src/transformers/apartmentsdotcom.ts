@@ -23,32 +23,20 @@ export class ADC extends Base {
                                 const text = priceQuery[p] ? priceQuery[p].textContent : "";
                                 if(text && text?.indexOf("$") > -1)
                                 {
-                                    console.log(text);
                                     price = text;
                                 }
-
-                                price = price.indexOf(" - ") > 0 ? price.split(" - ")[0] : price;
-                                price = price.replace("$", "").replace(",", "");
-                                console.log(text);
-                                const resValue = new ResultValue();
-                                resValue.Url = (urlWrapper as HTMLLinkElement)?.href || '';
-                                resValue.Name = `${addressWrapper?.textContent} ${titleWrapper?.textContent}` || '';
-        
-                                if (price) {
-                                    resValue.Price = parseInt(price, 10);
-                                }
-                                result.Values.push(resValue);
                             }
-                        else {
-                            console.log("unable to resolve pricing data");
-                            const resValue = new ResultValue();
-                            resValue.Url = (urlWrapper as HTMLLinkElement)?.href || '';
-                            resValue.Name = `${addressWrapper?.textContent} ${titleWrapper?.textContent}` || '';
-                            
-                            result.Values.push(resValue);
-                        }
-                    }
+                        price = price.indexOf(" - ") > 0 ? price.split(" - ")[0] : price;
+                        price = price.replace("$", "").replace(",", "");
+                        const resValue = new ResultValue();
+                        resValue.Url = (urlWrapper as HTMLLinkElement)?.href || '';
+                        resValue.Name = `${addressWrapper?.textContent} ${titleWrapper?.textContent}` || '';
 
+                        if (price) {
+                            resValue.Price = parseInt(price, 10);
+                        }
+                        result.Values.push(resValue);
+                    }
                     resolve(result);
                 } else {
                     console.info('no list content ... ');

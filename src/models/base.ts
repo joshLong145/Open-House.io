@@ -1,3 +1,5 @@
+import { Base } from "../transformers/base";
+
 export class BaseTransformModel {
     private _data: any;
     get Data() { return this._data; }
@@ -15,7 +17,7 @@ export class BaseTransformModel {
     private _price: number;
     get Price(): number { return this._price; }
 
-    private _transform: any;
+    private _transform: Base | undefined;
     public get Transform() { return this._transform; }
     public set Transform(value: any) { this._transform = value; }
 
