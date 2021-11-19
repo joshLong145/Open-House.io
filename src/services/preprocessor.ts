@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { BaseTransformModel } from '../models/base';
 import { 
    Zillow,
