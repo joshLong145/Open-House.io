@@ -1,6 +1,4 @@
 name: ci
-
-name: container-build
 on:
   push:
     branches:
