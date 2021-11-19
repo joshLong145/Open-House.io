@@ -56,11 +56,11 @@ export class PreProcessor implements IService {
             this.logger.Log.info(`Resolving new transformer for model: ${model.Data.transformer}`);
             switch(model.Data.transformer) {
                 case "zillow":
-                    model.Transform = new Zillow();
+                    model.Transform = new Zillow(this.logger);
                     break;
                 
                 case "ADC":
-                    model.Transform = new ADC();
+                    model.Transform = new ADC(this.logger);
                     break;
             } 
         }
