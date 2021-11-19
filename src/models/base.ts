@@ -17,7 +17,7 @@ export class BaseTransformModel {
     private _price: number;
     get Price(): number { return this._price; }
 
-    private _transform?: Base;
+    private _transform: Base | undefined;
     public get Transform() { return this._transform; }
     public set Transform(value: any) { this._transform = value; }
 

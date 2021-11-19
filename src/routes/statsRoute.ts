@@ -27,24 +27,7 @@ export class StatsRoutes extends BaseRoute {
             const collection: Collection | undefined = 
                 this._pm?.DB?.collection(process.env.COLLECTION_NAME as string);
             const cursor: AggregationCursor| undefined = 
-                collection?.aggregate([
-                    {
-                        $addFields: {
-                            results: {
-                            $regexFindAll: { 
-                                input: "$_name", 
-                                regex: `/${town}/g`
-                                },
-                            }
-                        }
-                    },
-                    {
-                        $group: {
-                            _id:null,
-                            avg: { $avg:"$_price" },
-                            count: {$sum: 1}
-                        }
-                }]);
+                this._pm?.generateCursorForAveraging(collection as Collection, town);
             cursor?.toArray().then(item => {
                 console.log(item);
                 res.status(200);

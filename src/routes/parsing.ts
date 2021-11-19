@@ -38,18 +38,14 @@ export class ParsingRoutes extends BaseRoute {
             return new Promise<Result<RentalDataValue>>((resolve, reject) => {
                 try {
                     this._preprocess.resolveDomStructureForModel(model).then(() => {
-                        model.Transform.transform().then((res: Result<RentalDataValue>) => {
-                            for (const data of res?.Values) {
-                                collection?.find({'_name': data.Name}).toArray().then(docs => {
-                                   docs?.length < 1 && collection.insertOne(data);
-                                });
-                           }
-
-                          resolve(res);
-                        }).catch((error: any) => {
-                            console.error(error);
-                            resolve(new Result());
+                        model.Transform.transform().then((transformResult: Result<RentalDataValue>) => {
+                            
+                            this._pm?.storeAsync(collection, transformResult.Values);
+                            resolve(transformResult);
                         });
+                    }).catch((error: any) => {
+                        console.error(error);
+                        resolve(new Result());
                     }).catch((err: any) => {
                         console.error(err);
                         resolve(new Result());
@@ -66,8 +62,10 @@ export class ParsingRoutes extends BaseRoute {
         }
 
         Promise.all(resPromises).then((results: Result<RentalDataValue>[]) => {
+            console.log("All transformers have resolved: ", results);
             res.status(200).send(results);
         }).catch((reson: any) => {
+            console.error(reson);
         });
     }
     
