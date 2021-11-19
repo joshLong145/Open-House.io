@@ -43,7 +43,7 @@ export class PreProcessor implements IService {
             const fs: any = require('fs');
             const stream: any = fs.readFileSync(__dirname + configPath, {encoding: 'utf8', flag: 'r'});
     
-            return JSON.parse(stream);
+            return JSON.parse(stream as unknown as string);
         } catch (e) {
             console.error("Error while loading configuration", e.message);
         }
@@ -94,7 +94,7 @@ export class PreProcessor implements IService {
                     console.error(err);
                 });
             } catch (e) {
-                console.error("Error while resolving DOM for model", e.message);
+                console.error("Error while resolving DOM for model");
                 reject(e);
             } 
         });
