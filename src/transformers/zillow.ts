@@ -1,6 +1,12 @@
 import { Base } from './base';
 import { RentalDataValue, Result } from './../models/Result';
+import { ConsoleLoggerWrapper } from '../logging/ConsoleLoggerWrapper';
 export class Zillow extends Base {
+    constructor(logger: ConsoleLoggerWrapper)
+    {
+        super(logger);
+    }
+
     transform() {
         return new Promise<Result<RentalDataValue>>((resolve, reject) => {
             const result: Result <RentalDataValue> = new Result();
@@ -46,9 +52,5 @@ export class Zillow extends Base {
     prasePrice(price: string | null): string { 
         const result: any = price?.match(/(\$[0-9,]+(\.[0-9]{2})?)/);
         return result != null ? result[0] : "";
-    }
-
-    public constructor() {
-        super();
     }
 }

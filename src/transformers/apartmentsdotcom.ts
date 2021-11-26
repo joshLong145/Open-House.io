@@ -1,8 +1,14 @@
 import { Base } from './base';
 import { RentalDataValue, Result } from './../models/Result';
+import { ConsoleLoggerWrapper } from '../logging/ConsoleLoggerWrapper';
 
 export class ADC extends Base {
     
+    constructor(logger: ConsoleLoggerWrapper)
+    {
+        super(logger);
+    }
+
     transform() {
         return new Promise<Result<RentalDataValue>>((resolve, reject) => {
             const result: Result<RentalDataValue> = new Result();
