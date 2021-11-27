@@ -18,7 +18,6 @@ export class Zillow extends Base {
                     var listLength: number = list[0].children.length || 0;
                     for(var i= 0; i < listLength; i++) {
                         const outerWrapper: HTMLCollectionOf<Element> = list[0].children[i].getElementsByClassName('list-card');
-                        // console.log(outerWrapper)
                         if(outerWrapper.length) {
                             const div = outerWrapper[0].getElementsByClassName('list-card-info');
                             const aTagWrapper = div[0].children[0]
@@ -34,6 +33,8 @@ export class Zillow extends Base {
                                 resValue.Name = name || '';
                                 resValue.Price = parseInt(price.replace('$', '').replace(',', ''), 10) || 0;
                                 result.Values.push(resValue);
+                                this._logger.Log.debug(`Parsing child elemnt ${name} with address ${(aTagWrapper as any).href}`);
+
                             }
                         }
                     }
