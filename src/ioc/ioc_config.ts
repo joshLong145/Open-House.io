@@ -11,7 +11,6 @@ import { PreProcessor } from '../services/preprocessor';
 import { IService } from '../interfaces/IService';
 import { makeLoggerMiddleware } from "inversify-logger-middleware";
 import { GenerateConsoleLogger } from "../logging/LoggingFactory";
-import { Logger } from "winston";
 import { ConsoleLoggerWrapper } from "../logging/ConsoleLoggerWrapper";
 
 const logger = GenerateConsoleLogger("ioc");

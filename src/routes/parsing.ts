@@ -6,16 +6,21 @@ import { inject, injectable } from 'inversify';
 import SERVICE_IDENTIFIERS from '../identities/identities';
 import { PreProcessor } from '../services/preprocessor';
 import { PersistanceManager } from '../services/db';
+import { ConsoleLoggerWrapper } from '../logging/ConsoleLoggerWrapper';
+import { loggers } from 'winston';
 
 @injectable()
 export class ParsingRoutes extends BaseRoute {
 
     private _preprocess: PreProcessor;
+    private _logger: ConsoleLoggerWrapper;
     constructor(@inject(SERVICE_IDENTIFIERS.PREPROCESSOR) prepros: PreProcessor, 
-                @inject(SERVICE_IDENTIFIERS.DATABASE) pm: PersistanceManager) {
+                @inject(SERVICE_IDENTIFIERS.DATABASE) pm: PersistanceManager,
+                @inject(SERVICE_IDENTIFIERS.LOGGER) logger: ConsoleLoggerWrapper) {
         super(pm);
 
         this._preprocess = prepros;
+        this._logger = logger;
     }
     
     initializeRouter(router: Router): void {
@@ -59,10 +64,13 @@ export class ParsingRoutes extends BaseRoute {
 
         for (const model of models) {
             resPromises.push(resolverWrapper(model));
+
         }
 
         Promise.all(resPromises).then((results: Result<RentalDataValue>[]) => {
-            console.log("All transformers have resolved: ", results);
+            this._logger.Log.info("Done transforming models transformation results");
+            this._logger.Log.info("----- -----");
+            this._logger.Log.info(results.toString());
             res.status(200).send(results);
         }).catch((reson: any) => {
             console.error(reson);

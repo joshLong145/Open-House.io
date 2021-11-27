@@ -10,6 +10,10 @@ export class RentalDataValue {
     private _url: string = '';
     public get Url(): string { return this._url; }
     public set Url(value: string) { this._url = value; }
+
+    public toString(): string {
+        return `${this._name} ${this._url} ${this._price}`;
+    }
 }
 
 export class Result<T> {
@@ -25,5 +29,15 @@ export class Result<T> {
     
     public constructor() {
         this._id = "1";
+    }
+
+    public toString(): string {
+        var sb = `${this._id}, ${this._status},`;
+        for (const value of this._values)
+        {
+            sb += ` ${(value as any).toString()}`;
+        }
+
+        return sb;
     }
 }
