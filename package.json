@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest ",
+    "test": "jest --config jest.config.js",
     "build": "tsc -p tsconfig.json --outDir ./dist",
     "start": "node -r dotenv/config dist/src/index.js"
   },
