@@ -1,4 +1,4 @@
-name: Build
+name: ci-tsc
 on:
   push:
     branches:
